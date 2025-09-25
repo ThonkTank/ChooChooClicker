@@ -16,6 +16,8 @@ Choo Choo Clicker ist ein minimalistisches Pixelart-Clicker-Spiel rund um einen 
 ```
 .
 ├── README.md         # Dokumentation zu Features, Architektur und Ausführung
+├── start_game.bat    # Windows-Shortcut zum Starten der Anwendung
+├── start_game.sh     # Unix-Shortcut zum Starten der Anwendung
 └── src
     └── app.py        # Hauptanwendung mit Spiel-Logik und Rendering
 ```
@@ -33,10 +35,21 @@ Choo Choo Clicker ist ein minimalistisches Pixelart-Clicker-Spiel rund um einen 
 
 ## Ausführen
 
-Das Spiel benötigt eine Python-Installation (Version 3.10 oder neuer empfohlen). Tkinter ist Teil der Standardbibliothek vieler Python-Distributionen.
+Das Spiel benötigt eine Python-Installation (Version 3.10 oder neuer empfohlen). Tkinter ist Bestandteil vieler Standard-Distributionen, unter Windows kann es bei der Python-Installation optional ausgewählt werden. Im Zweifel lässt sich Tkinter über die Paketverwaltung des Systems nachrüsten.
 
-```bash
-python src/app.py
-```
+### Schnellstart über Shortcut
+
+- **Linux/macOS**: `./start_game.sh`
+- **Windows**: Doppelklick auf `start_game.bat` oder Aufruf im Terminal via `start_game.bat`
+
+Die Skripte wählen automatisch den passenden Python-Interpreter (priorisiert `python3` bzw. `py`).
+
+### Manuelle Ausführung
+
+Falls Sie die Anwendung lieber direkt starten möchten, nutzen Sie einen der folgenden Befehle im Projektverzeichnis:
+
+- `python src/app.py` (allgemein)
+- `python3 src/app.py` (Linux/macOS)
+- `py src/app.py` (Windows)
 
 Beim Start öffnet sich ein Fenster mit Karte, Ressourcenleiste und Aktionsbereich. Nutzen Sie den Button **Schieben**, um Momentum aufzubauen, und platzieren Sie neue Schienen, indem Sie auf Felder des Rasters klicken.
