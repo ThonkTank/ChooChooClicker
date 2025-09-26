@@ -20,14 +20,16 @@ Diese Analyse bewertet den aktuellen Aufbau von Choo Choo Clicker auf Ordnungs-,
 **Empfohlene Richtung:** Siehe To-do [`todo/refactor-architecture.md`](../todo/refactor-architecture.md).
 
 ### 2. Schwach gekapselte Karten-API
-**Beobachtung:** `GameMap` stellt nur eine kombinierte Methode `add_track` bereit. Für automatische Verbindungen ruft der Aufrufer intern `_neighbours` auf, obwohl diese Methode als privat markiert ist. Die Existenz von Schienen wird indirekt über die Anzahl der Nachbarn bestimmt (`has_track` prüft `len(...) > 0`).
+**Beobachtung (alt):** `GameMap` stellte nur eine kombinierte Methode `add_track` bereit. Für automatische Verbindungen musste der Aufrufer intern `_neighbours` nutzen, obwohl diese Methode als privat markiert war. Die Existenz von Schienen wurde indirekt über die Anzahl der Nachbarn bestimmt (`has_track` prüfte `len(...) > 0`).
 
 **Risiken:**
-- Fragile Kopplung zwischen UI und Map-Logik, weil private Methoden von außen genutzt werden.
-- Keine Möglichkeit, tote Enden oder vorkonfigurierte Weichen korrekt abzubilden (eine Schiene ohne Nachbarn wird als "kein Track" behandelt und nicht gerendert).
-- Junctions (>2 Nachbarn) liefern im Rendering nur Platzhalter, sodass zukünftige Streckenpläne visuell nicht unterstützt werden.
+- Fragile Kopplung zwischen UI und Map-Logik, weil private Methoden von außen genutzt wurden.
+- Keine Möglichkeit, tote Enden oder vorkonfigurierte Weichen korrekt abzubilden (eine Schiene ohne Nachbarn wurde als "kein Track" behandelt und nicht gerendert).
+- Junctions (>2 Nachbarn) lieferten im Rendering nur Platzhalter, sodass zukünftige Streckenpläne visuell nicht unterstützt wurden.
 
-**Empfohlene Richtung:** Siehe To-do [`todo/game-map-api.md`](../todo/game-map-api.md).
+**Status (April 2024):** Mit dem Modul [`src/world/game_map.py`](../src/world/README.md) wurde die API überarbeitet. Tile-Belegung (`place_track`/`remove_track`) und gerichtete Verbindungen (`connect`/`disconnect`) sind nun getrennt modelliert, `auto_connect` kümmert sich um optionale Nachbarschaftsverkabelung und `_select_track_sprite` wertet `TrackPiece`/`TrackShape` direkt aus.
+
+**Absicherung:** Die Szenarien für Dead-Ends, T-Stücke und Kreuzungen sind in den Tests unter [`tests/world/test_game_map.py`](../tests/world/test_game_map.py) dokumentiert.
 
 ### 3. Sprite-Verarbeitung als Performance-Risiko
 **Beobachtung:** `SpriteSheetLoader.rotate_tile` rotiert Tiles zur Laufzeit per Pixelkopie in verschachtelten Schleifen. Caching oder vorberechnete Assets existieren nicht.

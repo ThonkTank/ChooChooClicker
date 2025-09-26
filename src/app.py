@@ -1,9 +1,9 @@
 import tkinter as tk
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, FrozenSet, List, Optional, Tuple
+from typing import Dict, FrozenSet, Tuple
 
-Cell = Tuple[int, int]
+from world import Cell, Direction, GameMap, TrackShape
 
 
 @dataclass
@@ -21,41 +21,6 @@ class Train:
             return False
         self.momentum -= 1
         return True
-
-
-@dataclass
-class GameMap:
-    width: int
-    height: int
-    tracks: Dict[Cell, List[Cell]] = field(default_factory=dict)
-
-    def __post_init__(self) -> None:
-        for x in range(self.width):
-            for y in range(self.height):
-                self.tracks.setdefault((x, y), [])
-
-    def add_track(self, a: Cell, b: Optional[Cell] = None) -> None:
-        if b is None:
-            self.tracks[a] = self._neighbours(a)
-            return
-        self.tracks.setdefault(a, [])
-        self.tracks.setdefault(b, [])
-        if b not in self.tracks[a]:
-            self.tracks[a].append(b)
-        if a not in self.tracks[b]:
-            self.tracks[b].append(a)
-
-    def has_track(self, cell: Cell) -> bool:
-        return len(self.tracks.get(cell, [])) > 0
-
-    def _neighbours(self, cell: Cell) -> List[Cell]:
-        x, y = cell
-        neighbours: List[Cell] = []
-        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-            nx, ny = x + dx, y + dy
-            if 0 <= nx < self.width and 0 <= ny < self.height and self.has_track((nx, ny)):
-                neighbours.append((nx, ny))
-        return neighbours
 
 
 class SpriteSheetLoader:
@@ -181,12 +146,13 @@ class ChooChooClicker:
                 ring_cells.append((0, y))
 
         for cell in ring_cells:
-            self.map.add_track(cell, None)
+            self.map.place_track(cell)
 
         # Connect the ring sequentially
         for idx, cell in enumerate(ring_cells):
             next_cell = ring_cells[(idx + 1) % len(ring_cells)]
-            self.map.add_track(cell, next_cell)
+            self.map.connect(cell, next_cell)
+            self.map.connect(next_cell, cell)
 
     def _create_widgets(self) -> None:
         top_frame = tk.Frame(self.root, bg=self.BG_COLOR)
@@ -317,9 +283,8 @@ class ChooChooClicker:
         if 0 <= grid_x < self.map.width and 0 <= grid_y < self.map.height:
             cell = (grid_x, grid_y)
             if not self.map.has_track(cell):
-                self.map.add_track(cell, None)
-                for neighbour in self.map._neighbours(cell):
-                    self.map.add_track(cell, neighbour)
+                self.map.place_track(cell)
+                self.map.auto_connect(cell)
                 self._draw_map()
 
     def _push_train(self) -> None:
@@ -347,48 +312,49 @@ class ChooChooClicker:
         self._schedule_tick()
 
     def _select_track_sprite(self, cell: Cell) -> str:
-        neighbours = self.map.tracks.get(cell, [])
-        vectors = {
-            (nx - cell[0], ny - cell[1])
-            for nx, ny in neighbours
-            if (nx, ny) != cell
-        }
-
-        if len(vectors) <= 1:
-            if vectors:
-                dx, dy = next(iter(vectors))
-                return "track_straight_ew" if dx != 0 else "track_straight_ns"
+        piece = self.map.get_track_piece(cell)
+        if piece is None:
             return "ground"
 
-        if len(vectors) > 2:
-            # Placeholder until junction sprites are available
+        connections = piece.connections
+
+        if piece.shape in {TrackShape.ISOLATED, TrackShape.DEAD_END}:
+            if Direction.NORTH in connections or Direction.SOUTH in connections:
+                return "track_straight_ns"
+            if Direction.EAST in connections or Direction.WEST in connections:
+                return "track_straight_ew"
             return "track_straight_ns"
 
-        vec_list = list(vectors)
-        first, second = vec_list
-        if first == (-second[0], -second[1]):
-            return "track_straight_ns" if first[0] == 0 else "track_straight_ew"
+        if piece.shape == TrackShape.STRAIGHT:
+            if {Direction.NORTH, Direction.SOUTH}.issubset(connections):
+                return "track_straight_ns"
+            return "track_straight_ew"
 
-        direction_set = frozenset(vectors)
-        curve_map: Dict[FrozenSet[Cell], str] = {
-            frozenset({(0, -1), (1, 0)}): "track_curve_ne",
-            frozenset({(1, 0), (0, 1)}): "track_curve_se",
-            frozenset({(0, 1), (-1, 0)}): "track_curve_sw",
-            frozenset({(-1, 0), (0, -1)}): "track_curve_nw",
-        }
-        return curve_map.get(direction_set, "track_straight_ns")
+        if piece.shape == TrackShape.CURVE:
+            curve_map: Dict[FrozenSet[Direction], str] = {
+                frozenset({Direction.NORTH, Direction.EAST}): "track_curve_ne",
+                frozenset({Direction.EAST, Direction.SOUTH}): "track_curve_se",
+                frozenset({Direction.SOUTH, Direction.WEST}): "track_curve_sw",
+                frozenset({Direction.WEST, Direction.NORTH}): "track_curve_nw",
+            }
+            return curve_map.get(connections, "track_curve_ne")
+
+        # Placeholder until spezielle Tiles für Weichen/Kreuzungen vorliegen.
+        return "track_straight_ns"
 
     def _attempt_move(self) -> bool:
         current = self.train.position
         dx, dy = self.train.direction
         next_cell = (current[0] + dx, current[1] + dy)
-        if next_cell in self.map.tracks.get(current, []):
+        connections = self.map.get_connections(current)
+        if next_cell in connections:
             self.train.position = next_cell
             return True
 
         # Try to choose a new direction if blocked
-        for neighbour in self.map.tracks.get(current, []):
-            if neighbour != (current[0] - dx, current[1] - dy):
+        previous_cell = (current[0] - dx, current[1] - dy)
+        for neighbour in connections:
+            if neighbour != previous_cell:
                 self.train.direction = (
                     neighbour[0] - current[0],
                     neighbour[1] - current[1],

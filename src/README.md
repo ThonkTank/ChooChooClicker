@@ -2,8 +2,12 @@
 
 ```text
 src/
-├── app.py   # Hauptanwendung mit Spiel-Logik und Rendering
-└── README.md
+├── README.md
+├── app.py        # Hauptanwendung mit Spiel-Logik und Rendering
+└── world/        # Weltmodell inkl. GameMap
+    ├── README.md
+    ├── __init__.py
+    └── game_map.py
 ```
 
 ## Zweck des Ordners
@@ -11,9 +15,13 @@ Der Ordner `src/` bündelt die ausführbare Python-Anwendung von Choo Choo Click
 
 ## Komponenten in `app.py`
 - **`SpriteSheetLoader`** – Lädt `Ground-Rails.png`, zerlegt das Sprite-Sheet in 32×32-Pixel-Tiles und stellt sie der Karte bereit.
-- **`GameMap`** – Hält das 12×12-Gitter, verwaltet Schienenverbindungen und liefert Nachbarschaftsinformationen für das automatische Tile-Mapping. Offene Fragen zur API-Kapselung sind im To-do [„Überarbeitung der GameMap-API“](../todo/game-map-api.md) dokumentiert.
 - **`Train`** – Speichert Position, Fahrtrichtung und Momentum-Speicher. Enthält Hilfsfunktionen, um Momentum zu verbrauchen oder zu gewinnen.
-- **`ChooChooClicker`** – Tkinter-Anwendung, die Oberfläche, Event-Handling und Tick-Zyklus orchestriert. Die Methode `_setup_initial_ring` baut den Start-Ring im Uhrzeigersinn auf, `_handle_click` fügt Schienen hinzu, `_push_train` erhöht das Momentum und `_schedule_tick` bewegt den Zug alle 600 ms.
+- **`ChooChooClicker`** – Tkinter-Anwendung, die Oberfläche, Event-Handling und Tick-Zyklus orchestriert. Die Methode `_setup_initial_ring` baut den Start-Ring im Uhrzeigersinn auf, `_handle_click` platziert Schienen via `GameMap.place_track` und `GameMap.auto_connect`, `_push_train` erhöht das Momentum und `_schedule_tick` bewegt den Zug alle 600 ms.
+
+## Weltmodell in `world/`
+- **`GameMap`** – Separates Modul für die Kartenlogik. Trennt Tile-Belegung (`place_track`/`remove_track`) von gerichteten Verbindungen (`connect`/`disconnect`) und stellt über `get_track_piece` vorbereitete Topologie-Informationen für das Rendering zur Verfügung.
+- **`TrackPiece` & `TrackShape`** – Strukturierte Rückgaben, die `_select_track_sprite` direkt auswertet, ohne Nachbarschaften selbst berechnen zu müssen.
+- **`Direction`** – Enum der vier kardinalen Richtungen; dient als verbindliche Basis für alle Schienentopologien.
 
   _Hinweis:_ Die aktuelle Bündelung von Spiellogik, Rendering und UI in dieser Klasse ist im To-do [„Refactoring der Spiel-Architektur“](../todo/refactor-architecture.md) adressiert.
 
