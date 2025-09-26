@@ -1,6 +1,7 @@
 import tkinter as tk
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
+from pathlib import Path
+from typing import Dict, FrozenSet, List, Optional, Tuple
 
 Cell = Tuple[int, int]
 
@@ -57,6 +58,80 @@ class GameMap:
         return neighbours
 
 
+class SpriteSheetLoader:
+    def __init__(
+        self,
+        master: tk.Misc,
+        image_path: Path,
+        *,
+        tile_size: int = 32,
+        spacing: int = 16,
+    ) -> None:
+        self.master = master
+        self.tile_size = tile_size
+        self.spacing = spacing
+        self.tile_offset = tile_size + spacing
+        self.sheet = tk.PhotoImage(master=self.master, file=str(image_path))
+
+    def get_tile(self, column: int, row: int) -> tk.PhotoImage:
+        x1 = column * self.tile_offset
+        y1 = row * self.tile_offset
+        x2 = x1 + self.tile_size - 1
+        y2 = y1 + self.tile_size - 1
+        tile = tk.PhotoImage(
+            master=self.master, width=self.tile_size, height=self.tile_size
+        )
+        tile.tk.call(
+            tile,
+            "copy",
+            self.sheet,
+            "-from",
+            x1,
+            y1,
+            x2,
+            y2,
+            "-to",
+            0,
+            0,
+        )
+        return tile
+
+    def rotate_tile(self, source: tk.PhotoImage, angle: int) -> tk.PhotoImage:
+        normalized = angle % 360
+        if normalized == 0:
+            return source
+        rotated = tk.PhotoImage(
+            master=self.master, width=self.tile_size, height=self.tile_size
+        )
+        for x in range(self.tile_size):
+            for y in range(self.tile_size):
+                nx, ny = self._rotate_point(x, y, normalized)
+                rotated.tk.call(
+                    rotated,
+                    "copy",
+                    source,
+                    "-from",
+                    x,
+                    y,
+                    x,
+                    y,
+                    "-to",
+                    nx,
+                    ny,
+                )
+        return rotated
+
+    def _rotate_point(self, x: int, y: int, angle: int) -> Tuple[int, int]:
+        max_index = self.tile_size - 1
+        if angle == 90:
+            return max_index - y, x
+        if angle == 180:
+            return max_index - x, max_index - y
+        if angle == 270:
+            return y, max_index - x
+        raise ValueError(f"Unsupported rotation angle: {angle}")
+
+
 class ChooChooClicker:
     CELL_SIZE = 32
     BG_COLOR = "#1a1b26"
@@ -73,6 +148,10 @@ class ChooChooClicker:
         self.train = Train(position=(0, 0), direction=(1, 0))
         self._setup_initial_ring()
         self.train.position = (0, 0)
+
+        self.sprites: Dict[str, tk.PhotoImage] = {}
+        self.show_grid = True
+        self._load_sprites()
 
         self._create_widgets()
         self._draw_map()
@@ -159,32 +238,58 @@ class ChooChooClicker:
         )
         push_button.pack()
 
+    def _load_sprites(self) -> None:
+        sprite_path = Path(__file__).resolve().parent.parent / "Ground-Rails.png"
+        loader = SpriteSheetLoader(self.root, sprite_path)
+        ground = loader.get_tile(0, 0)
+        straight_ns = loader.get_tile(1, 1)
+        straight_ew = loader.rotate_tile(straight_ns, 90)
+        curve_ne = loader.get_tile(2, 1)
+        curve_se = loader.rotate_tile(curve_ne, 90)
+        curve_sw = loader.rotate_tile(curve_ne, 180)
+        curve_nw = loader.rotate_tile(curve_ne, 270)
+        self.sprites = {
+            "ground": ground,
+            "track_straight_ns": straight_ns,
+            "track_straight_ew": straight_ew,
+            "track_curve_ne": curve_ne,
+            "track_curve_se": curve_se,
+            "track_curve_sw": curve_sw,
+            "track_curve_nw": curve_nw,
+        }
+
     def _draw_map(self) -> None:
         self.canvas.delete("all")
         for x in range(self.map.width):
             for y in range(self.map.height):
                 x1 = x * self.CELL_SIZE
                 y1 = y * self.CELL_SIZE
-                x2 = x1 + self.CELL_SIZE
-                y2 = y1 + self.CELL_SIZE
-                self.canvas.create_rectangle(
-                    x1,
-                    y1,
-                    x2,
-                    y2,
-                    fill=self.BG_COLOR,
-                    outline=self.GRID_COLOR,
+                cell = (x, y)
+                self.canvas.create_image(
+                    x1, y1, anchor=tk.NW, image=self.sprites["ground"]
                 )
-                if self.map.has_track((x, y)):
-                    padding = 6
-                    self.canvas.create_rectangle(
-                        x1 + padding,
-                        y1 + padding,
-                        x2 - padding,
-                        y2 - padding,
-                        fill=self.TRACK_COLOR,
-                        outline="",
+                if self.map.has_track(cell):
+                    sprite_key = self._select_track_sprite(cell)
+                    sprite_image = self.sprites.get(sprite_key)
+                    if sprite_image is None:
+                        sprite_image = self.sprites["track_straight_ns"]
+                    self.canvas.create_image(
+                        x1, y1, anchor=tk.NW, image=sprite_image
                     )
+
+        if self.show_grid:
+            width_px = self.map.width * self.CELL_SIZE
+            height_px = self.map.height * self.CELL_SIZE
+            for x in range(self.map.width + 1):
+                px = x * self.CELL_SIZE
+                self.canvas.create_line(
+                    px, 0, px, height_px, fill=self.GRID_COLOR, width=1
+                )
+            for y in range(self.map.height + 1):
+                py = y * self.CELL_SIZE
+                self.canvas.create_line(
+                    0, py, width_px, py, fill=self.GRID_COLOR, width=1
+                )
 
         tx, ty = self.train.position
         x1 = tx * self.CELL_SIZE + 8
@@ -235,6 +340,38 @@ class ChooChooClicker:
             self._draw_map()
         self._update_resource_display()
         self._schedule_tick()
+
+    def _select_track_sprite(self, cell: Cell) -> str:
+        neighbours = self.map.tracks.get(cell, [])
+        vectors = {
+            (nx - cell[0], ny - cell[1])
+            for nx, ny in neighbours
+            if (nx, ny) != cell
+        }
+
+        if len(vectors) <= 1:
+            if vectors:
+                dx, dy = next(iter(vectors))
+                return "track_straight_ew" if dx != 0 else "track_straight_ns"
+            return "ground"
+
+        if len(vectors) > 2:
+            # Placeholder until junction sprites are available
+            return "track_straight_ns"
+
+        vec_list = list(vectors)
+        first, second = vec_list
+        if first == (-second[0], -second[1]):
+            return "track_straight_ns" if first[0] == 0 else "track_straight_ew"
+
+        direction_set = frozenset(vectors)
+        curve_map: Dict[FrozenSet[Cell], str] = {
+            frozenset({(0, -1), (1, 0)}): "track_curve_ne",
+            frozenset({(1, 0), (0, 1)}): "track_curve_se",
+            frozenset({(0, 1), (-1, 0)}): "track_curve_sw",
+            frozenset({(-1, 0), (0, -1)}): "track_curve_nw",
+        }
+        return curve_map.get(direction_set, "track_straight_ns")
 
     def _attempt_move(self) -> bool:
         current = self.train.position
