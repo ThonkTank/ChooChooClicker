@@ -3,7 +3,6 @@
 ```text
 todo/
 ├── README.md
-├── game-map-api.md
 └── refactor-architecture.md
 ```
 
@@ -15,6 +14,5 @@ Dieses Verzeichnis sammelt alle offenen Aufgaben und Ideen für Choo Choo Clicke
 
 Aktuelle Schwerpunkte:
 - [`refactor-architecture.md`](refactor-architecture.md) – Aufbrechen der monolithischen `app.py` in klar abgegrenzte Pakete.
-- [`game-map-api.md`](game-map-api.md) – Verbesserte Kapselung und Datenmodellierung für Strecken.
 
 Bitte verlinke aus der jeweiligen Modul-Dokumentation zurück auf den passenden To-do-Eintrag, damit der Bezug stets nachvollziehbar bleibt.
