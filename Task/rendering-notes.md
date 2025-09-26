@@ -18,5 +18,11 @@ Diese Notizen verfolgen aktuelle Abweichungen zwischen erwartetem und tatsächli
 3. Umsetzungsergebnisse in den Modul-Readmes spiegeln; diese Datei anschließend aktualisieren oder archivieren.
 
 ## Platz für weitere Beobachtungen
-- _Neue Beobachtungen hier ergänzen (mit Datum, Kontext und betroffenen Modulen)._ 
+- _Neue Beobachtungen hier ergänzen (mit Datum, Kontext und betroffenen Modulen)._
+- **2024-05-09** _Track-Sprite-Selektion_: Neuer Pytest
+  [`tests/ui/test_track_sprite_selection.py`](../tests/ui/test_track_sprite_selection.py) bestätigt die
+  erwarteten Sprite-Keys für alle Randzellen des Initial-Rings (Kurven + Gerade). Keine Abweichungen
+  festgestellt.
+  - Offene Frage: Für T-Kreuzungen (`TrackShape.T_JUNCTION`) und Kreuzungen (`TrackShape.CROSS`) fehlen
+    weiterhin explizite Sprite-Mappings im UI-Code und damit Testabdeckung.
 
