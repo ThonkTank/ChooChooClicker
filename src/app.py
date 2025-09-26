@@ -161,26 +161,31 @@ class ChooChooClicker:
     def _setup_initial_ring(self) -> None:
         w, h = self.map.width, self.map.height
         ring_cells = []
+
+        # Top edge: left to right
         for x in range(w):
             ring_cells.append((x, 0))
-            ring_cells.append((x, h - 1))
-        for y in range(1, h - 1):
-            ring_cells.append((0, y))
+
+        # Right edge: top to bottom (excluding the top corner already added)
+        for y in range(1, h):
             ring_cells.append((w - 1, y))
 
-        unique_cells = []
-        seen = set()
-        for cell in ring_cells:
-            if cell not in seen:
-                seen.add(cell)
-                unique_cells.append(cell)
+        # Bottom edge: right to left (excluding the bottom-right corner already added)
+        if h > 1:
+            for x in range(w - 2, -1, -1):
+                ring_cells.append((x, h - 1))
 
-        for cell in unique_cells:
+        # Left edge: bottom to top (excluding the corners already added)
+        if w > 1:
+            for y in range(h - 2, 0, -1):
+                ring_cells.append((0, y))
+
+        for cell in ring_cells:
             self.map.add_track(cell, None)
 
         # Connect the ring sequentially
-        for idx, cell in enumerate(unique_cells):
-            next_cell = unique_cells[(idx + 1) % len(unique_cells)]
+        for idx, cell in enumerate(ring_cells):
+            next_cell = ring_cells[(idx + 1) % len(ring_cells)]
             self.map.add_track(cell, next_cell)
 
     def _create_widgets(self) -> None:
