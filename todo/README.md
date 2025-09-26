@@ -2,7 +2,9 @@
 
 ```text
 todo/
-└── README.md
+├── README.md
+├── game-map-api.md
+└── refactor-architecture.md
 ```
 
 Dieses Verzeichnis sammelt alle offenen Aufgaben und Ideen für Choo Choo Clicker. Jede Aufgabe erhält eine eigene Markdown-Datei mit:
@@ -11,6 +13,8 @@ Dieses Verzeichnis sammelt alle offenen Aufgaben und Ideen für Choo Choo Clicke
 2. **Betroffene Module** – Referenzen auf Codeordner (z. B. [`src/`](../src/README.md)).
 3. **Lösungsideen** – Skizzen, Randbedingungen und offene Fragen.
 
-Bitte verlinke aus der jeweiligen Modul-Dokumentation zurück auf den To-do-Eintrag, damit der Bezug stets nachvollziehbar bleibt.
+Aktuelle Schwerpunkte:
+- [`refactor-architecture.md`](refactor-architecture.md) – Aufbrechen der monolithischen `app.py` in klar abgegrenzte Pakete.
+- [`game-map-api.md`](game-map-api.md) – Verbesserte Kapselung und Datenmodellierung für Strecken.
 
-Aktuell sind keine offenen To-dos dokumentiert. Lege bei Bedarf eine neue Datei an, z. B. `todo/neue-funktion.md`.
+Bitte verlinke aus der jeweiligen Modul-Dokumentation zurück auf den passenden To-do-Eintrag, damit der Bezug stets nachvollziehbar bleibt.

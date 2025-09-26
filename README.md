@@ -44,6 +44,7 @@ Während des Spielens füllt der Button **Schieben** den Momentum-Speicher, bis 
 
 ## Weiterführende Dokumentation
 - [src/README.md](src/README.md) – Details zur Code-Struktur, Komponenten und Render-Pipeline.
+- [docs/index.md](docs/index.md) – Projektweite Analysen und Entscheidungsgrundlagen (z. B. aktuelle Struktur-Review).
 - [todo/README.md](todo/README.md) – Übersicht über offene Aufgaben und Verlinkungen zurück in die Dokumentation.
 
 Offene Architektur- oder Feature-Fragen werden nicht hier, sondern im `todo/`-Verzeichnis mit direktem Kontext dokumentiert.
