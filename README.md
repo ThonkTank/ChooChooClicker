@@ -1,55 +1,49 @@
-# Choo Choo Clicker
+# Choo Choo Clicker – Projektleitfaden
 
-Choo Choo Clicker ist ein minimalistisches Pixelart-Clicker-Spiel rund um einen kleinen Zug. Das Spiel läuft in einer eigenständigen Python-Anwendung auf Basis von Tkinter und kommt ganz ohne Game-Engine aus. Diese Version liefert die ersten Grundfunktionen: ein schienengebundenes Spielfeld, einfache Ressourcenverwaltung und eine Schieben-Aktion, mit der der Zug Momentum sammelt, um sich über die Schienen zu bewegen.
+Choo Choo Clicker ist ein minimalistisches Pixelart-Clicker-Spiel rund um einen kleinen Zug. Die Anwendung läuft lokal als eigenständiges Tkinter-Programm und dient als spielerischer Prototyp für eine ressourcenbasierte Idle-Mechanik.
 
-## Features
+## Inhaltsverzeichnis
+- [Projektüberblick](#projektüberblick)
+- [Verzeichnisstruktur](#verzeichnisstruktur)
+- [Soll-Workflows](#soll-workflows)
+- [Weiterführende Dokumentation](#weiterführende-dokumentation)
 
-- **Sprite-basiertes Kartendesign** – Die Spielfläche besteht aus einem 12×12-Raster, das vollständig mit 32×32-Pixel-Tiles aus `Ground-Rails.png` gerendert wird. Jede Zelle lässt sich anklicken, um neue Schienen zu platzieren.
-- **Initialer Schienenring** – Das Spiel erzeugt automatisch einen geschlossenen Schienenring am Rand der Karte. Der Zug startet in der linken oberen Ecke auf diesem Ring.
-- **Pixelart-Zug** – Der Zug wird mit einfachen Formen dargestellt und bewegt sich entlang der Schienen.
-- **Aktion "Schieben"** – Im rechten Seitenbereich befindet sich ein Button, der Momentum erzeugt. Momentum ist auf zehn Einheiten begrenzt.
-- **Momentum-Ressource** – Eine Anzeige am oberen Bildschirmrand zeigt den aktuellen Momentum-Vorrat. Jede Schiebe-Aktion erhöht den Vorrat, bis der Speicher voll ist.
-- **Automatische Bewegung** – Alle 600 Millisekunden verbraucht der Zug automatisch eine Momentum-Einheit, um sich um ein Feld weiterzubewegen. Ist die aktuelle Fahrtrichtung blockiert, versucht der Zug automatisch einen passenden Schienenabschnitt zu wählen.
+## Projektüberblick
+- **Spielfeld**: Ein 12×12-Raster wird über 32×32-Pixel-Sprites aus `Ground-Rails.png` gerendert. Für jede Zelle wählt das Spiel automatisch den passenden Schienen- oder Bodentile.
+- **Zuglogik**: Ein einzelner Zug bewegt sich entlang des platzierten Streckennetzes. Momentum entscheidet, ob der Zug sich im nächsten Tick um ein Feld weiter bewegt.
+- **Interaktion**: Ein Button liefert Momentum (maximal zehn Einheiten). Durch Klicken auf freie Rasterfelder werden zusätzliche Schienenabschnitte aufgebaut.
 
-## Projektstruktur
+## Verzeichnisstruktur
+| Pfad | Inhalt & Zweck |
+| --- | --- |
+| `Ground-Rails.png` | Sprite-Sheet mit Boden- und Schienentiles für das gesamte Spielfeld. |
+| `README.md` | Diese Übersicht mit Projektzielen, Workflows und Verweisen auf Detaildokumente. |
+| `src/` | Python-Quellcode der Anwendung. Enthält `app.py` mit Spiel- und Renderinglogik (siehe [src/README.md](src/README.md)). |
+| `start_game.sh` | Startskript für Linux/macOS. Wählt automatisch `python3` oder `python` aus. |
+| `start_game.bat` | Startskript für Windows. Nutzt `py` oder `python`. |
+| `todo/` | Geplante Verbesserungen und offene Punkte (siehe [todo/README.md](todo/README.md)). |
 
-```
-.
-├── README.md         # Dokumentation zu Features, Architektur und Ausführung
-├── start_game.bat    # Windows-Shortcut zum Starten der Anwendung
-├── start_game.sh     # Unix-Shortcut zum Starten der Anwendung
-└── src
-    └── app.py        # Hauptanwendung mit Spiel-Logik und Rendering
-```
+## Soll-Workflows
+1. **Spiel starten (Linux/macOS)**  
+   ```bash
+   ./start_game.sh
+   ```
+   Das Skript nutzt `python3`, fällt aber bei Bedarf auf `python` zurück.
+2. **Spiel starten (Windows)**  
+   ```powershell
+   .\start_game.bat
+   ```
+   Das Batch-Skript versucht zuerst `py`, anschließend `python`.
+3. **Direkter Programmstart**  
+   ```bash
+   python src/app.py
+   ```
+   Öffnet das Tkinter-Fenster, zeigt das Raster und blendet rechts den Momentum-Button ein. Der Zug fährt automatisch, sobald Momentum verfügbar ist.
 
-## Implementierungsdetails
+Während des Spielens füllt der Button **Schieben** den Momentum-Speicher, bis zehn Einheiten erreicht sind. Jede Tick-Iteration (600 ms) verbraucht eine Einheit. Ist die aktuelle Richtung blockiert, sucht die Spiel-Logik passende Alternativen anhand der bestehenden Schienenverbindungen.
 
-### `src/app.py`
+## Weiterführende Dokumentation
+- [src/README.md](src/README.md) – Details zur Code-Struktur, Komponenten und Render-Pipeline.
+- [todo/README.md](todo/README.md) – Übersicht über offene Aufgaben und Verlinkungen zurück in die Dokumentation.
 
-- **Technologie-Stack**: Verwendet Tkinter für die Fenster- und Canvas-Erstellung. Boden- und Schienen-Tiles stammen aus einem Sprite-Sheet und werden per `tk.PhotoImage` auf den Canvas gerendert.
-- **Spielzustand**: `GameMap` verwaltet das Raster sowie Verbindungen zwischen Schienenzellen. `Train` hält Position, Fahrtrichtung und Momentum-Speicher des Zuges.
-- **Initialisierung**: `ChooChooClicker._setup_initial_ring` erzeugt den äußeren Schienenring und verbindet die Abschnitte miteinander.
-- **Interaktion**: `ChooChooClicker._handle_click` erlaubt es, durch Anklicken neuer Felder Schienenabschnitte hinzuzufügen. `ChooChooClicker._push_train` füllt den Momentum-Speicher auf.
-- **Spielablauf**: Ein Timer (`_schedule_tick`) sorgt für periodische Spielzyklen. Pro Zyklus wird Momentum verbraucht, um den Zug weiterzubewegen. Dabei wird zuerst versucht, in der aktuellen Richtung zu fahren. Falls das nicht möglich ist, wird eine alternative Verbindung gewählt.
-- **Rendering**: Ein `SpriteSheetLoader` extrahiert 32×32-Pixel-Tiles aus `Ground-Rails.png`. `_select_track_sprite` wertet pro Zelle die vorhandenen Nachbarn aus, um automatisch den passenden Boden-, Gerade- oder Kurven-Tile zu bestimmen. `_draw_map` zeichnet zunächst den Bodentile und legt anschließend den berechneten Schienenabschnitt darüber. Optional lassen sich Rasterlinien weiterhin einblenden.
-
-## Ausführen
-
-Das Spiel benötigt eine Python-Installation (Version 3.10 oder neuer empfohlen). Tkinter ist Bestandteil vieler Standard-Distributionen, unter Windows kann es bei der Python-Installation optional ausgewählt werden. Im Zweifel lässt sich Tkinter über die Paketverwaltung des Systems nachrüsten.
-
-### Schnellstart über Shortcut
-
-- **Linux/macOS**: `./start_game.sh`
-- **Windows**: Doppelklick auf `start_game.bat` oder Aufruf im Terminal via `start_game.bat`
-
-Die Skripte wählen automatisch den passenden Python-Interpreter (priorisiert `python3` bzw. `py`).
-
-### Manuelle Ausführung
-
-Falls Sie die Anwendung lieber direkt starten möchten, nutzen Sie einen der folgenden Befehle im Projektverzeichnis:
-
-- `python src/app.py` (allgemein)
-- `python3 src/app.py` (Linux/macOS)
-- `py src/app.py` (Windows)
-
-Beim Start öffnet sich ein Fenster mit Karte, Ressourcenleiste und Aktionsbereich. Nutzen Sie den Button **Schieben**, um Momentum aufzubauen, und platzieren Sie neue Schienen, indem Sie auf Felder des Rasters klicken.
+Offene Architektur- oder Feature-Fragen werden nicht hier, sondern im `todo/`-Verzeichnis mit direktem Kontext dokumentiert.
