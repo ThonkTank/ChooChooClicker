@@ -1,29 +1,28 @@
-# Modul `src/world/`
+# Paket `src/world/`
 
 ```text
 src/world/
+├── README.md
 ├── __init__.py
 └── game_map.py
 ```
 
-## Zweck des Ordners
-`src/world/` kapselt die Spielfeld- und Weltlogik von Choo Choo Clicker.
-Ziel ist eine klare Trennung zwischen Datenmodell (z. B. belegte Tiles) und UI-spezifischem Rendering, das über vorbereitete Value-Objekte erfolgt.
+## Zweck
+`src/world/` kapselt die Spielfeld- und Weltlogik. Das Modul stellt die Karte (`GameMap`) bereit, deren Informationen von der Spiel-Engine (`src/game/`) und vom UI (`src/ui/`) gleichermaßen genutzt werden.
 
-## Module
-- **`game_map.py`** – Enthält `GameMap`, `TrackPiece` und zugehörige Enums (`Direction`, `TrackShape`).
-  Die Karte verwaltet:
-  - belegte Tiles per `place_track`/`remove_track`,
-  - gerichtete Verbindungen per `connect`/`disconnect`,
-  - automatische Nachbarschaftsverkabelung via `auto_connect`,
-  - strukturierte Rückgaben für das Rendering (`get_track_piece`).
-- **`__init__.py`** – Stellt die zentralen Klassen und Typen für andere Module bereit.
+## Module & Hauptfunktionen
+- **`game_map.py`**
+  - `GameMap` – Verwaltung von belegten Tiles und gerichteten Verbindungen.
+  - `TrackPiece` & `TrackShape` – strukturierte Rückgaben für das Rendering.
+  - `Direction` – Kardinalrichtungen inklusive `delta`-/`opposite`-Hilfsfunktionen.
+- **`__init__.py`** – Exportiert die oben genannten Typen für einfachere Imports.
 
 ## Standards & Konventionen
-- Richtungsinformationen werden ausschließlich über das `Direction`-Enum modelliert.
-- Neue Weltmodule müssen die hier dokumentierte Trennung von Zuständen respektieren.
-- Ergänzende Hilfsfunktionen bitte mit ausführlichen Docstrings und Verweisen auf zugehörige Tests versehen.
+- Kartenänderungen müssen Tests in `tests/world/` erweitern.
+- Funktionen, die Seiteneffekte haben (z. B. `auto_connect`), geben ihre Änderungen als Sets zurück, um UI/Gameplay über neue Verbindungen zu informieren.
+- Erweiterungen des Weltmodells sollen zuerst hier dokumentiert werden und anschließend Querverweise in den Paket-Readmes erhalten.
 
 ## Weiterführende Dokumentation
-- [src/README.md](../README.md) – Überblick über die Gesamtstruktur des Anwendungs-Codes.
-- [tests/world/README.md](../../tests/world/README.md) – Abdeckung und Szenarien der zugehörigen Unit-Tests.
+- [Gameplay `src/game/`](../game/README.md)
+- [UI `src/ui/`](../ui/README.md)
+- [Testübersicht](../../tests/README.md)

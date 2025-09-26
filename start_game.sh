@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-APP_PATH="$SCRIPT_DIR/src/app.py"
+APP_PATH="$SCRIPT_DIR/src/main.py"
 if command -v python3 >/dev/null 2>&1; then
     exec python3 "$APP_PATH" "$@"
 elif command -v python >/dev/null 2>&1; then

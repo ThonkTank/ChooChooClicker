@@ -3,22 +3,27 @@
 ```text
 tests/
 ├── README.md
+├── game/
+│   ├── README.md
+│   └── test_train.py
 └── world/
     ├── README.md
-    └── test_game_map.py
+    ├── test_game_map.py
+    └── test_integration.py
 ```
 
 ## Zweck des Ordners
-Der Ordner `tests/` enthält automatisierte Tests für die Python-Module im Verzeichnis [`src/`](../src/README.md).
-Alle Tests basieren auf `pytest` und dienen der Absicherung zentraler Spielmechaniken.
+Der Ordner `tests/` enthält automatisierte Tests für die Module in [`src/`](../src/README.md). Alle Tests basieren auf `pytest` und laufen ohne GUI-Abhängigkeit.
 
 ## Wichtige Komponenten
-- **`world/`** – Tests für die Karten- und Weltlogik.
+- **`game/`** – Tests für Momentum- und Tick-Logik.
+- **`world/`** – Tests und Integrationsfälle für das Kartenmodell.
 
 ## Standards & Konventionen
-- Alle neuen Testmodule müssen in der Strukturübersicht oben ergänzt werden.
-- Gemeinsame Fixtures werden hier dokumentiert oder in `conftest.py` gespeichert, sobald Bedarf besteht.
-- Testfälle sollen klar beschreiben, welches Verhalten abgesichert wird und auf welche Dokumentation sie referenzieren.
+- Gemeinsame Fixtures gehören in `conftest.py`, sobald mehrere Module sie benötigen.
+- Pfade werden über `pytest.ini` konfiguriert (`pythonpath = src`). Zusätzliche `sys.path`-Manipulation ist nicht erlaubt.
+- Jeder neue Testordner benötigt eine README mit Struktur- und Konventionsbeschreibung.
 
 ## Weiterführende Dokumentation
-- [tests/world/README.md](world/README.md) – Details zu Welt-bezogenen Tests und den abgedeckten Szenarien.
+- [pytest-Konfiguration](../pytest.ini)
+- [Paket-Readmes in `src/`](../src/README.md)

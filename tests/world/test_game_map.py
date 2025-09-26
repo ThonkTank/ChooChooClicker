@@ -1,11 +1,4 @@
-from pathlib import Path
-import sys
-
 import pytest
-
-SRC_PATH = Path(__file__).resolve().parents[2] / "src"
-if str(SRC_PATH) not in sys.path:
-    sys.path.insert(0, str(SRC_PATH))
 
 from world import Direction, GameMap, TrackShape
 

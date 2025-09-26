@@ -3,33 +3,29 @@
 ```text
 src/
 ├── README.md
-├── app.py        # Hauptanwendung mit Spiel-Logik und Rendering
-└── world/        # Weltmodell inkl. GameMap
-    ├── README.md
-    ├── __init__.py
-    └── game_map.py
+├── main.py         # Einstiegspunkt & Komposition
+├── assets/         # Sprite-Lade- und Cachelogik
+├── game/           # Spiellogik & Momentum
+├── ui/             # Tkinter-Anwendung
+└── world/          # Karten- und Weltmodell
 ```
 
 ## Zweck des Ordners
-Der Ordner `src/` bündelt die ausführbare Python-Anwendung von Choo Choo Clicker. Alle Spielsysteme – vom Rendering über die Ressourcenerzeugung bis zur Bewegung des Zuges – befinden sich hier in einer einzelnen Datei, die als klar strukturierter Einstiegspunkt dient.
+`src/` bündelt alle Python-Module der Anwendung. Die Pakete sind so geschnitten, dass Spiellogik und UI strikt getrennt bleiben und über `src/main.py` zusammengesetzt werden.
 
-## Komponenten in `app.py`
-- **`SpriteSheetLoader`** – Lädt `Ground-Rails.png`, zerlegt das Sprite-Sheet in 32×32-Pixel-Tiles und stellt sie der Karte bereit.
-- **`Train`** – Speichert Position, Fahrtrichtung und Momentum-Speicher. Enthält Hilfsfunktionen, um Momentum zu verbrauchen oder zu gewinnen.
-- **`ChooChooClicker`** – Tkinter-Anwendung, die Oberfläche, Event-Handling und Tick-Zyklus orchestriert. Die Methode `_setup_initial_ring` baut den Start-Ring im Uhrzeigersinn auf, `_handle_click` platziert Schienen via `GameMap.place_track` und `GameMap.auto_connect`, `_push_train` erhöht das Momentum und `_schedule_tick` bewegt den Zug alle 600 ms.
+## Komponenten
+- **`main.py`** – erstellt `GameEngine`, initialisiert die Standardkarte und verdrahtet UI und Assets.
+- **`assets/`** – siehe [assets/README.md](assets/README.md) für Sprite-Handling-Konventionen.
+- **`game/`** – siehe [game/README.md](game/README.md) für Momentum- und Tick-Regeln.
+- **`ui/`** – siehe [ui/README.md](ui/README.md) für Tkinter-spezifische Komponenten.
+- **`world/`** – siehe [world/README.md](world/README.md) für das Weltmodell.
 
-## Weltmodell in `world/`
-- **`GameMap`** – Separates Modul für die Kartenlogik. Trennt Tile-Belegung (`place_track`/`remove_track`) von gerichteten Verbindungen (`connect`/`disconnect`) und stellt über `get_track_piece` vorbereitete Topologie-Informationen für das Rendering zur Verfügung.
-- **`TrackPiece` & `TrackShape`** – Strukturierte Rückgaben, die `_select_track_sprite` direkt auswertet, ohne Nachbarschaften selbst berechnen zu müssen.
-- **`Direction`** – Enum der vier kardinalen Richtungen; dient als verbindliche Basis für alle Schienentopologien.
+## Standards & Konventionen
+- Querschnittsthemen (Logging, Tick-Kommunikation) werden in den Paket-Readmes dokumentiert und hier verlinkt.
+- Neue Pakete benötigen eine eigene README mit Strukturdiagramm, Zweck und Verweisen auf Tests.
+- Änderungen am Einstiegspunkt müssen gleichzeitig die Startskripte und die Haupt-README aktualisieren.
 
-  _Hinweis:_ Die aktuelle Bündelung von Spiellogik, Rendering und UI in dieser Klasse ist im To-do [„Refactoring der Spiel-Architektur“](../todo/refactor-architecture.md) adressiert.
-
-## Architektur- und Stilrichtlinien
-- Halte Logik, Rendering und UI-Konstruktion in klar getrennten Methoden. Bevorzuge kleine, fokussierte Hilfsfunktionen.
-- Kommentiere bedeutende Designentscheidungen direkt im Code (z. B. warum bestimmte Bewegungsregeln gelten).
-- Bei Erweiterungen bitte neue Module in Unterordnern mit eigener `README.md` anlegen, um diese Übersicht schlank zu halten.
-
-## Weiterführende Hinweise
-- Assets (z. B. `Ground-Rails.png`) werden direkt von `app.py` relativ zum Projekt-Root geladen.
-- Für To-dos oder größere Umbauten verweise aus Docstrings und Kommentaren in den passenden Eintrag im [`todo/`-Verzeichnis](../todo/README.md).
+## Weiterführende Dokumentation
+- [Projekt-README](../README.md)
+- [Struktur-Review](../docs/structure-review.md)
+- [Testübersicht](../tests/README.md)

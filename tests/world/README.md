@@ -3,20 +3,18 @@
 ```text
 tests/world/
 ├── README.md
-└── test_game_map.py
+├── test_game_map.py
+└── test_integration.py
 ```
 
 ## Zweck
-Dieses Teilverzeichnis bündelt Unit-Tests für die Weltlogik rund um das [`GameMap`-Modul](../../src/world/README.md).
-Der Fokus liegt auf der Topologie von Schienen sowie deren Klassifikation für das Rendering.
+Sichert die Spielfeld-API (`GameMap`, `TrackPiece`, `Direction`) und deren Zusammenspiel mit der Spiel-Logik ab.
 
-## Testabdeckung
-- **`test_game_map.py`** – Prüft Dead-Ends, T-Stücke und Kreuzungen der `GameMap` sowie die bidirektionale Auto-Verkabelung.
+## Testfälle
+- **`test_game_map.py`** – Einzeltests für Tile-Topologien (Dead Ends, T-Kreuzungen, Kreuzungen).
+- **`test_integration.py`** – Verifiziert das Zusammenspiel von Kartenlogik und Zug/Engine (z. B. Start-Ring, alternative Routen).
 
-## Standards & Konventionen
-- Jeder Testfall benennt das erwartete Verhalten explizit (`dead_end`, `t_junction`, `crossroads`).
-- Neue Tests sollen auf konkrete Dokumentationsabschnitte verweisen und bei Bedarf zusätzliche Fixtures einführen.
-- Für komplexere Szenarien bitte zusätzliche Detaildokumente unter `tests/world/docs/` anlegen.
-
-## Weiterführende Dokumentation
-- [src/world/README.md](../../src/world/README.md) – Hintergrund zur Implementierung der Kartenlogik.
+## Konventionen
+- Karten-Setups immer über kleine Hilfsfunktionen oder Fixtures dokumentieren.
+- Erwartete Verbindungen als Mengen (`set`) definieren, um Reihenfolgeabhängigkeiten zu vermeiden.
+- Erweiterungen der Weltlogik zuerst hier mit Tests untermauern, bevor UI-Änderungen erfolgen.
