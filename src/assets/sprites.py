@@ -93,6 +93,8 @@ class SpriteSheet:
 
     def _rotate_point(self, x: int, y: int, angle: int) -> Tuple[int, int]:
         max_index = self.tile_size - 1
+        # Bildschirmkoordinaten wachsen nach rechts (x) und nach unten (y).
+        # Dementsprechend entspricht eine positive 90°-Rotation einer Drehung im Uhrzeigersinn.
         if angle == 90:
             return max_index - y, x
         if angle == 180:

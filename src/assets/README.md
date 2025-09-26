@@ -19,6 +19,12 @@ Dieses Paket bündelt alle Asset- und Sprite-bezogenen Funktionen. Es stellt ein
 - Verwende das optionale `rotation`-Argument statt eigener Rotationslogik in UI-Komponenten.
 - Neue Asset-Typen müssen ihre eigenen README-Abschnitte und ggf. einen `docs/`-Unterordner hinzufügen.
 
+## Rotation Tests
+- Die Datei [`tests/assets/test_sprites.py`](../../tests/assets/test_sprites.py) prüft `_rotate_point` sowie `_rotate_tile` der
+  `SpriteSheet`-Klasse mit synthetischen `PhotoImage`-Fallbacks.
+- Annahmen: Bildschirmkoordinaten wachsen nach rechts (`x`) und nach unten (`y`); eine 90°-Rotation folgt dem Uhrzeigersinn.
+  Diese Konvention wird in den Tests explizit dokumentiert und sollte bei Erweiterungen eingehalten werden.
+
 ## Weiterführende Dokumentation
 - [UI-Schicht](../ui/README.md) – beschreibt, wie Sprites beim Rendering eingesetzt werden.
 - [Projektübersicht](../../README.md)
