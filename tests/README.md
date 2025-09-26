@@ -6,6 +6,9 @@ tests/
 ├── game/
 │   ├── README.md
 │   └── test_train.py
+├── ui/
+│   ├── README.md
+│   └── test_track_sprite_selection.py
 └── world/
     ├── README.md
     ├── test_game_map.py
@@ -17,7 +20,12 @@ Der Ordner `tests/` enthält automatisierte Tests für die Module in [`src/`](..
 
 ## Wichtige Komponenten
 - **`game/`** – Tests für Momentum- und Tick-Logik.
+- **`ui/`** – Headless Rendering-Checks für Sprite- und Layoutlogik.
 - **`world/`** – Tests und Integrationsfälle für das Kartenmodell.
+
+## UI Rendering Checks
+- [`test_track_sprite_selection.py`](ui/test_track_sprite_selection.py) validiert die Sprite-Auswahl
+  entlang der vorinitialisierten Ringstrecke ohne Tk-Abhängigkeiten.
 
 ## Standards & Konventionen
 - Gemeinsame Fixtures gehören in `conftest.py`, sobald mehrere Module sie benötigen.
