@@ -3,6 +3,7 @@
 ```text
 Task/
 ├── README.md
+├── ground_rails_summary.py
 └── rendering-notes.md
 ```
 
@@ -18,8 +19,9 @@ Dieses Verzeichnis bündelt alle laufenden Untersuchungen und Ad-hoc-Analysen f�
 - **Inhaltliche Mindeststruktur:** Datum, Ausgangsbeobachtung, Analyse, nächste Schritte / Hand-off.
 - **Verlinkungen:** Immer betroffene Module, Screenshots oder externe Messungen referenzieren. Bei neuen To-dos in `todo/` bitte auf beide Richtungen verweisen.
 
-Aktuell vorhandene Dokumente:
+Aktuell vorhandene Dokumente & Tools:
 - [`rendering-notes.md`](./rendering-notes.md) – Laufende Sammlung der Rendering-Abweichungen inklusive Querverweise zu betroffenen Modulen.
+- [`ground_rails_summary.py`](./ground_rails_summary.py) – CLI-Helfer zum heuristischen Auswerten von `Ground-Rails.png` ohne Tk-/Pillow-Abhängigkeiten.
 
 ## Offene Untersuchungen
 Die folgenden Analysen sind vorbereitet und warten auf detaillierte Ausarbeitung:

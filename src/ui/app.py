@@ -10,6 +10,18 @@ from game import GameEngine, TickResult, TrainState
 from world import Cell, Direction, TrackShape
 
 
+SPRITE_COORDINATES: Dict[str, tuple[int, int, int]] = {
+    # siehe Task/rendering-notes.md → „Ground-Rails-Sheet (Tile-Orientierungen)“
+    "ground": (0, 0, 0),
+    "track_straight_ns": (1, 3, 0),
+    "track_straight_ew": (0, 1, 0),
+    "track_curve_ne": (1, 2, 0),
+    "track_curve_se": (1, 2, 90),
+    "track_curve_sw": (1, 2, 180),
+    "track_curve_nw": (1, 2, 270),
+}
+
+
 class ChooChooApp:
     CELL_SIZE = 32
     BG_COLOR = "#1a1b26"
@@ -24,7 +36,7 @@ class ChooChooApp:
 
         self._train_state: TrainState = self.engine.current_state()
         self._sprites: Dict[str, tk.PhotoImage] = {}
-        self._sprite_sheet = SpriteSheet(self.root, sprite_sheet_path)
+        self._sprite_sheet = SpriteSheet(self.root, sprite_sheet_path, spacing=0)
         self._show_grid = True
 
         self._create_widgets()
@@ -91,15 +103,11 @@ class ChooChooApp:
         push_button.pack()
 
     def _load_sprites(self) -> None:
-        self._sprites = {
-            "ground": self._sprite_sheet.get_tile(0, 0),
-            "track_straight_ns": self._sprite_sheet.get_tile(1, 1),
-            "track_straight_ew": self._sprite_sheet.get_tile(1, 1, rotation=90),
-            "track_curve_ne": self._sprite_sheet.get_tile(2, 1),
-            "track_curve_se": self._sprite_sheet.get_tile(2, 1, rotation=90),
-            "track_curve_sw": self._sprite_sheet.get_tile(2, 1, rotation=180),
-            "track_curve_nw": self._sprite_sheet.get_tile(2, 1, rotation=270),
-        }
+        self._sprites = {}
+        for sprite_key, (column, row, rotation) in SPRITE_COORDINATES.items():
+            self._sprites[sprite_key] = self._sprite_sheet.get_tile(
+                column, row, rotation=rotation
+            )
 
     def _draw_map(self) -> None:
         self.canvas.delete("all")
@@ -214,4 +222,4 @@ class ChooChooApp:
         return "track_straight_ns"
 
 
-__all__ = ["ChooChooApp"]
+__all__ = ["ChooChooApp", "SPRITE_COORDINATES"]
