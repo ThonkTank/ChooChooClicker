@@ -2,8 +2,7 @@
 
 ```text
 todo/
-├── README.md
-└── refactor-architecture.md
+└── README.md
 ```
 
 Dieses Verzeichnis sammelt alle offenen Aufgaben und Ideen für Choo Choo Clicker. Jede Aufgabe erhält eine eigene Markdown-Datei mit:
@@ -12,7 +11,6 @@ Dieses Verzeichnis sammelt alle offenen Aufgaben und Ideen für Choo Choo Clicke
 2. **Betroffene Module** – Referenzen auf Codeordner (z. B. [`src/`](../src/README.md)).
 3. **Lösungsideen** – Skizzen, Randbedingungen und offene Fragen.
 
-Aktuelle Schwerpunkte:
-- [`refactor-architecture.md`](refactor-architecture.md) – Aufbrechen der monolithischen `app.py` in klar abgegrenzte Pakete.
+Aktuell sind keine offenen Aufgaben dokumentiert. Neue Themen bitte mit eigenem Dateinamen anlegen und hier verlinken.
 
 Bitte verlinke aus der jeweiligen Modul-Dokumentation zurück auf den passenden To-do-Eintrag, damit der Bezug stets nachvollziehbar bleibt.

@@ -2,12 +2,12 @@
 setlocal
 where py >nul 2>nul
 if %errorlevel%==0 (
-    py src\app.py %*
+    py src\main.py %*
     exit /b %errorlevel%
 )
 where python >nul 2>nul
 if %errorlevel%==0 (
-    python src\app.py %*
+    python src\main.py %*
     exit /b %errorlevel%
 )
 echo Fehler: Es konnte kein Python-Interpreter gefunden werden. Bitte installiere Python 3.10 oder neuer mit Tkinter-Unterstuetzung.
