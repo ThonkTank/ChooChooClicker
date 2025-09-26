@@ -91,14 +91,15 @@ class ChooChooApp:
         push_button.pack()
 
     def _load_sprites(self) -> None:
+        # Tile-Koordinaten siehe Task/rendering-notes.md → „Ground-Rails-Sheet (Tile-Orientierungen)“.
         self._sprites = {
             "ground": self._sprite_sheet.get_tile(0, 0),
-            "track_straight_ns": self._sprite_sheet.get_tile(1, 1),
-            "track_straight_ew": self._sprite_sheet.get_tile(1, 1, rotation=90),
-            "track_curve_ne": self._sprite_sheet.get_tile(2, 1),
-            "track_curve_se": self._sprite_sheet.get_tile(2, 1, rotation=90),
-            "track_curve_sw": self._sprite_sheet.get_tile(2, 1, rotation=180),
-            "track_curve_nw": self._sprite_sheet.get_tile(2, 1, rotation=270),
+            "track_straight_ns": self._sprite_sheet.get_tile(1, 3),
+            "track_straight_ew": self._sprite_sheet.get_tile(1, 3, rotation=90),
+            "track_curve_ne": self._sprite_sheet.get_tile(1, 2),
+            "track_curve_se": self._sprite_sheet.get_tile(1, 2, rotation=90),
+            "track_curve_sw": self._sprite_sheet.get_tile(1, 2, rotation=180),
+            "track_curve_nw": self._sprite_sheet.get_tile(1, 2, rotation=270),
         }
 
     def _draw_map(self) -> None:

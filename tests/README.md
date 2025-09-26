@@ -6,6 +6,9 @@ tests/
 ├── game/
 │   ├── README.md
 │   └── test_train.py
+├── ui/
+│   ├── README.md
+│   └── test_sprite_mapping.py
 └── world/
     ├── README.md
     ├── test_game_map.py
@@ -17,6 +20,7 @@ Der Ordner `tests/` enthält automatisierte Tests für die Module in [`src/`](..
 
 ## Wichtige Komponenten
 - **`game/`** – Tests für Momentum- und Tick-Logik.
+- **`ui/`** – Verifiziert Sprite-Mappings und Rendering-Hilfslogik ohne GUI-Abhängigkeit.
 - **`world/`** – Tests und Integrationsfälle für das Kartenmodell.
 
 ## Standards & Konventionen
