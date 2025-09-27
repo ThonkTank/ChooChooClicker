@@ -21,11 +21,12 @@ Diese Notizen verfolgen aktuelle Abweichungen zwischen erwartetem und tatsächli
 ## Platz für weitere Beobachtungen {#weitere-beobachtungen}
 - _Neue Beobachtungen hier ergänzen (mit Datum, Kontext und betroffenen Modulen)._
 - **2024-05-09** _Track-Sprite-Selektion_: Neuer Pytest
-  [`tests/ui/test_track_sprite_selection.py`](../tests/ui/test_track_sprite_selection.py) bestätigt die
-  erwarteten Sprite-Keys für alle Randzellen des Initial-Rings (Kurven + Gerade). Keine Abweichungen
-  festgestellt.
-  - Offene Frage: Für T-Kreuzungen (`TrackShape.T_JUNCTION`) und Kreuzungen (`TrackShape.CROSS`) fehlen
-    weiterhin explizite Sprite-Mappings im UI-Code und damit Testabdeckung.
+  [`tests/ui/test_track_sprite_selection.py`](../tests/ui/test_track_sprite_selection.py) bestätigte zunächst
+  die erwarteten Sprite-Keys für alle Randzellen des Initial-Rings (Kurven + Gerade).
+- **2025-09-27** _Track-Sprite-Selektion_: Mapping und Tests für T- und Kreuzungen ergänzt; Dokumentation
+  in [`src/ui/README.md`](../src/ui/README.md#sprite-belegung-ground-railspng), Regressionstests erweitert in
+  [`tests/ui/test_track_sprite_selection.py`](../tests/ui/test_track_sprite_selection.py). Abschluss im Archiv
+  [todo/archive/track-sprite-mapping.md](../todo/archive/track-sprite-mapping.md) festgehalten.
 
 ## Hand-off
 - Die Statusübersicht, Verantwortlichkeiten und Folge-To-dos sind im [Analyse-Dossier](./analysis-plan.md) konsolidiert.

@@ -7,7 +7,7 @@ import pytest
 
 from main import create_engine
 from ui.app import ChooChooApp
-from world import Cell, Direction, TrackPiece, TrackShape
+from world import Cell, Direction, GameMap, TrackPiece, TrackShape
 
 
 @pytest.fixture(scope="module")
@@ -59,3 +59,52 @@ def test_track_sprite_selection_on_initial_ring(engine):
         assert (
             sprite_key == expected_key
         ), f"Falscher Sprite-Key für {cell}: erwartet {expected_key}, erhalten {sprite_key}"
+
+
+def _build_test_app(center: Cell, directions: set[Direction]) -> SimpleNamespace:
+    """Erzeugt eine Dummy-App mit gezielten Gleisverbindungen um `center`."""
+
+    game_map = GameMap(width=5, height=5)
+    cells = {center}
+    for direction in directions:
+        dx, dy = direction.delta
+        neighbour = (center[0] + dx, center[1] + dy)
+        game_map.place_track(neighbour)
+        cells.add(neighbour)
+    game_map.place_track(center)
+    for cell in cells:
+        game_map.auto_connect(cell)
+    engine_stub = SimpleNamespace(game_map=game_map)
+    return SimpleNamespace(engine=engine_stub)
+
+
+@pytest.mark.parametrize(
+    "directions, expected_key",
+    [
+        ({Direction.EAST, Direction.SOUTH, Direction.WEST}, "track_t_north"),
+        ({Direction.NORTH, Direction.EAST, Direction.WEST}, "track_t_south"),
+        ({Direction.NORTH, Direction.SOUTH, Direction.EAST}, "track_t_west"),
+        ({Direction.NORTH, Direction.SOUTH, Direction.WEST}, "track_t_east"),
+    ],
+)
+def test_track_sprite_selection_for_t_junctions(directions, expected_key):
+    """Alle Richtungsvarianten der T-Kreuzung nutzen die dokumentierten Sprite-Keys."""
+
+    center = (2, 2)
+    dummy_app = _build_test_app(center, set(directions))
+    sprite_key = ChooChooApp._select_track_sprite(dummy_app, center)
+    assert (
+        sprite_key == expected_key
+    ), f"Erwarteter Key {expected_key} für Richtungen {directions}, erhalten {sprite_key}"
+
+
+def test_track_sprite_selection_for_cross():
+    """Eine 4-Wege-Kreuzung wird auf den spezifischen Kreuzungs-Sprite gemappt."""
+
+    center = (2, 2)
+    directions = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST}
+    dummy_app = _build_test_app(center, directions)
+    sprite_key = ChooChooApp._select_track_sprite(dummy_app, center)
+    assert (
+        sprite_key == "track_cross"
+    ), f"Kreuzung sollte 'track_cross' liefern, erhalten {sprite_key}"

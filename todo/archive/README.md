@@ -3,7 +3,8 @@
 ```text
 todo/archive/
 ├── README.md
-└── camera-initialization-timing.md
+├── camera-initialization-timing.md
+└── track-sprite-mapping.md
 ```
 
 Dieses Verzeichnis sammelt abgeschlossene Aufgaben. Jeder Eintrag behält den ursprünglichen Kontext, ergänzt jedoch eine Abschlusssektion mit Verweisen auf die umgesetzten Lösungen.
