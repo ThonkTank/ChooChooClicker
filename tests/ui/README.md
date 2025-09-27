@@ -4,6 +4,7 @@
 tests/ui/
 ├── README.md
 ├── test_camera_initialization.py
+├── test_scaling.py
 └── test_track_sprite_selection.py
 ```
 

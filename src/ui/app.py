@@ -8,11 +8,12 @@ from typing import Dict, FrozenSet
 from assets import SpriteSheet
 from game import GameEngine, TickResult, TrainState
 from ui.camera import CameraView
+from ui.scaling import compute_scaling
 from world import Cell, Direction, TrackShape
 
 
 class ChooChooApp:
-    CELL_SIZE = 32
+    BASE_CELL_SIZE = 32
     BG_COLOR = "#1a1b26"
     GRID_COLOR = "#2d3143"
     TRAIN_COLOR = "#f7768e"
@@ -22,6 +23,13 @@ class ChooChooApp:
         self.root = root
         self.engine = engine
         self.root.title("Choo Choo Clicker")
+
+        self._scaling = compute_scaling(root)
+        # Tk skaliert Fonts und Geometriedefaults mit diesem Faktor. Wir wenden ihn direkt an,
+        # damit alle Widgets konsistent reagieren.
+        self.root.tk.call("tk", "scaling", self._scaling)
+
+        self.cell_size = max(1, round(self.BASE_CELL_SIZE * self._scaling))
 
         self._train_state: TrainState = self.engine.current_state()
         self._sprites: Dict[str, tk.PhotoImage] = {}
@@ -44,19 +52,19 @@ class ChooChooApp:
         self.momentum_label = tk.Label(
             top_frame,
             text="Momentum: 0 / 0",
-            font=("Arial", 16, "bold"),
+            font=("Arial", self._scaled_font_size(16), "bold"),
             fg="#e0e0e0",
             bg=self.BG_COLOR,
-            padx=10,
-            pady=10,
+            padx=self._scaled_length(10),
+            pady=self._scaled_length(10),
         )
         self.momentum_label.pack(side=tk.LEFT)
 
         main_frame = tk.Frame(self.root, bg=self.BG_COLOR)
         main_frame.pack(fill=tk.BOTH, expand=True)
 
-        canvas_width = self.engine.game_map.width * self.CELL_SIZE
-        canvas_height = self.engine.game_map.height * self.CELL_SIZE
+        canvas_width = self.engine.game_map.width * self.cell_size
+        canvas_height = self.engine.game_map.height * self.cell_size
         self.canvas = tk.Canvas(
             main_frame,
             width=canvas_width,
@@ -64,43 +72,49 @@ class ChooChooApp:
             bg=self.BG_COLOR,
             highlightthickness=0,
         )
-        self.canvas.pack(side=tk.LEFT, padx=10, pady=10)
+        self.canvas.pack(
+            side=tk.LEFT,
+            padx=self._scaled_length(10),
+            pady=self._scaled_length(10),
+        )
         self.canvas.bind("<Button-1>", self._handle_click)
 
-        sidebar = tk.Frame(main_frame, width=150, bg="#222433")
+        sidebar = tk.Frame(main_frame, width=self._scaled_length(150), bg="#222433")
         sidebar.pack(side=tk.RIGHT, fill=tk.Y)
 
         action_label = tk.Label(
             sidebar,
             text="Aktionen",
-            font=("Arial", 14, "bold"),
+            font=("Arial", self._scaled_font_size(14), "bold"),
             fg="#f8f8f2",
             bg="#222433",
         )
-        action_label.pack(pady=(20, 10))
+        action_label.pack(
+            pady=(self._scaled_length(20), self._scaled_length(10))
+        )
 
         push_button = tk.Button(
             sidebar,
             text="Schieben",
             command=self._push_train,
-            font=("Arial", 12, "bold"),
+            font=("Arial", self._scaled_font_size(12), "bold"),
             bg="#3c3f58",
             fg="#f8f8f2",
             activebackground="#4e5272",
             activeforeground="#ffffff",
             width=12,
-            pady=8,
+            pady=self._scaled_length(8),
         )
         push_button.pack()
 
     def _initialize_camera(self) -> None:
         game_map = self.engine.game_map
         viewport_size = (
-            game_map.width * self.CELL_SIZE,
-            game_map.height * self.CELL_SIZE,
+            game_map.width * self.cell_size,
+            game_map.height * self.cell_size,
         )
         self._camera = CameraView(
-            cell_size=self.CELL_SIZE,
+            cell_size=self.cell_size,
             map_size=(game_map.width, game_map.height),
             viewport_size=viewport_size,
         )
@@ -127,8 +141,8 @@ class ChooChooApp:
         game_map = self.engine.game_map
         for x in range(game_map.width):
             for y in range(game_map.height):
-                x1 = x * self.CELL_SIZE
-                y1 = y * self.CELL_SIZE
+                x1 = x * self.cell_size
+                y1 = y * self.cell_size
                 cell = (x, y)
                 self.canvas.create_image(
                     x1, y1, anchor=tk.NW, image=self._sprites["ground"]
@@ -143,24 +157,37 @@ class ChooChooApp:
                     )
 
         if self._show_grid:
-            width_px = game_map.width * self.CELL_SIZE
-            height_px = game_map.height * self.CELL_SIZE
+            width_px = game_map.width * self.cell_size
+            height_px = game_map.height * self.cell_size
+            line_width = self._scaled_line_width()
             for x in range(game_map.width + 1):
-                px = x * self.CELL_SIZE
+                px = x * self.cell_size
                 self.canvas.create_line(
-                    px, 0, px, height_px, fill=self.GRID_COLOR, width=1
+                    px,
+                    0,
+                    px,
+                    height_px,
+                    fill=self.GRID_COLOR,
+                    width=line_width,
                 )
             for y in range(game_map.height + 1):
-                py = y * self.CELL_SIZE
+                py = y * self.cell_size
                 self.canvas.create_line(
-                    0, py, width_px, py, fill=self.GRID_COLOR, width=1
+                    0,
+                    py,
+                    width_px,
+                    py,
+                    fill=self.GRID_COLOR,
+                    width=line_width,
                 )
 
         tx, ty = self._train_state.position
-        x1 = tx * self.CELL_SIZE + 8
-        y1 = ty * self.CELL_SIZE + 8
-        x2 = x1 + self.CELL_SIZE - 16
-        y2 = y1 + self.CELL_SIZE - 16
+        margin = self._scaled_length(8)
+        diameter = max(1, self.cell_size - 2 * margin)
+        x1 = tx * self.cell_size + margin
+        y1 = ty * self.cell_size + margin
+        x2 = x1 + diameter
+        y2 = y1 + diameter
         self.canvas.create_oval(
             x1,
             y1,
@@ -168,15 +195,15 @@ class ChooChooApp:
             y2,
             fill=self.TRAIN_COLOR,
             outline=self.TRAIN_OUTLINE,
-            width=3,
+            width=self._scaled_line_width(base=3),
         )
 
         if self._camera is not None:
             self._camera.apply(self.canvas)
 
     def _handle_click(self, event: tk.Event) -> None:  # type: ignore[type-arg]
-        grid_x = event.x // self.CELL_SIZE
-        grid_y = event.y // self.CELL_SIZE
+        grid_x = event.x // self.cell_size
+        grid_y = event.y // self.cell_size
         game_map = self.engine.game_map
         if 0 <= grid_x < game_map.width and 0 <= grid_y < game_map.height:
             cell = (grid_x, grid_y)
@@ -260,6 +287,15 @@ class ChooChooApp:
             return cross_map.get(connections, "track_cross")
 
         return "track_straight_ns"
+
+    def _scaled_length(self, value: int | float) -> int:
+        return max(1, round(float(value) * self._scaling))
+
+    def _scaled_font_size(self, base: int) -> int:
+        return max(1, round(base * self._scaling))
+
+    def _scaled_line_width(self, *, base: int = 1) -> int:
+        return max(1, round(base * self._scaling))
 
 
 __all__ = ["ChooChooApp"]
