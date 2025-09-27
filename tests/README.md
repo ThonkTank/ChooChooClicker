@@ -31,6 +31,7 @@ Der Ordner `tests/` enthält automatisierte Tests für die Module in [`src/`](..
 - Gemeinsame Fixtures gehören in `conftest.py`, sobald mehrere Module sie benötigen.
 - Pfade werden über `pytest.ini` konfiguriert (`pythonpath = src`). Zusätzliche `sys.path`-Manipulation ist nicht erlaubt.
 - Jeder neue Testordner benötigt eine README mit Struktur- und Konventionsbeschreibung.
+- Gemeinsame Helfer liegen in [`tests_support/`](../src/tests_support/README.md) und werden über stabile Modulpfade eingebunden.
 
 ## Weiterführende Dokumentation
 - [pytest-Konfiguration](../pytest.ini)
