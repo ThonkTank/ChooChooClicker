@@ -7,7 +7,8 @@ src/
 ├── assets/         # Sprite-Lade- und Cachelogik
 ├── game/           # Spiellogik & Momentum
 ├── ui/             # Tkinter-Anwendung
-└── world/          # Karten- und Weltmodell
+├── world/          # Karten- und Weltmodell
+└── tests_support/  # Geteilte Test-Hilfsfunktionen
 ```
 
 ## Zweck des Ordners
@@ -19,6 +20,7 @@ src/
 - **`game/`** – siehe [game/README.md](game/README.md) für Momentum- und Tick-Regeln.
 - **`ui/`** – siehe [ui/README.md](ui/README.md) für Tkinter-spezifische Komponenten.
 - **`world/`** – siehe [world/README.md](world/README.md) für das Weltmodell.
+- **`tests_support/`** – siehe [tests_support/README.md](tests_support/README.md) für wiederverwendbare Test-Fakes.
 
 ## Standards & Konventionen
 - Querschnittsthemen (Logging, Tick-Kommunikation) werden in den Paket-Readmes dokumentiert und hier verlinkt.

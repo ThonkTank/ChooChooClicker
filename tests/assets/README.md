@@ -3,6 +3,7 @@
 ```text
 tests/assets/
 ├── README.md
+├── test_sprite_offsets.py
 └── test_sprites.py
 ```
 
@@ -12,8 +13,11 @@ Dieser Ordner enthält Unit-Tests für die Sprite-bezogenen Assets. Fokus ist di
 vertrauen können.
 
 ## Tests & Hauptfunktionen
+- **`tests/asset_fakes.py`** – stellt `FakePhotoImage` und `make_sheet` bereit, um SpriteSheet-Logik ohne echte Tk-Instanz zu testen.
 - **`test_sprites.py`** – überprüft `_rotate_point` und `_rotate_tile` der `SpriteSheet`-Klasse anhand synthetischer
   `PhotoImage`-Ersatzobjekte. Dokumentiert explizit die Drehrichtung (90° = Uhrzeigersinn) und die Koordinatenannahmen.
+- **`test_sprite_offsets.py`** – misst Bounding-Boxes künstlicher Sprites und stellt sicher, dass optionale Offset-Korrekturen
+  beim Kopieren und Caching angewendet werden.
 
 ## Standards & Konventionen
 - Tests in diesem Ordner verzichten auf reale Tkinter-Instanzen und verwenden Mock-/Fallback-Implementierungen für

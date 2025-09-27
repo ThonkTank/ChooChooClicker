@@ -4,7 +4,7 @@ Diese Notizen verfolgen aktuelle Abweichungen zwischen erwartetem und tatsächli
 
 ## Aktueller Befund (Stand: laufende Untersuchung) {#statuslaufend}
 - **UI-Skalierung im Hauptfenster** – Text- und Button-Elemente skalieren auf hochauflösenden Displays unscharf. Vermutete Ursache: Layout- und DPI-Behandlung in [`src/ui/app.py`](../src/ui/app.py).
-- **Sprite-Offsets bei Assets** – Mehrere Fahrzeug-Sprites erscheinen um 1–2 Pixel verschoben, besonders während Animationen. Prüfung der Sprite-Daten und Bounding-Boxes in [`src/assets/sprites.py`](../src/assets/sprites.py) erforderlich.
+- **Sprite-Offsets bei Assets** – Mehrere Fahrzeug-Sprites erscheinen um 1–2 Pixel verschoben, besonders während Animationen. Messreihe vom 2024-05-10 mit [`SpriteSheet.measure_bounds`](../src/assets/sprites.py) dokumentiert in [`todo/sprite-offset-audit.md`](../todo/sprite-offset-audit.md); Korrekturoffsets sind hinterlegt und per Tests abgesichert.
 - **Rotationen des SpriteSheets** – Die neuen Tests [`tests/assets/test_sprites.py`](../tests/assets/test_sprites.py) bestätigen die korrekte Uhrzeigersinn-Interpretation der 90°-Rotation; derzeit kein Handlungsbedarf.
 - **Kamera-Tracking beim Start** – Beim Initialisieren der Karte springt die Kamera kurzzeitig an eine falsche Position, bevor sie sich fängt. Der initiale Szenenaufbau in [`src/main.py`](../src/main.py) muss auf Timing und Update-Reihenfolge überprüft werden.
 
