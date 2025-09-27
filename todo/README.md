@@ -3,7 +3,9 @@
 ```text
 todo/
 ├── README.md
-├── camera-initialization-timing.md
+├── archive
+│   ├── README.md
+│   └── camera-initialization-timing.md
 ├── sprite-offset-audit.md
 ├── track-sprite-mapping.md
 └── ui-scaling-dpi.md
@@ -16,10 +18,11 @@ Dieses Verzeichnis sammelt alle offenen Aufgaben und Ideen für Choo Choo Clicke
 3. **Lösungsideen** – Skizzen, Randbedingungen und offene Fragen.
 
 Aktuelle Aufgaben:
-- [`camera-initialization-timing.md`](./camera-initialization-timing.md) – Stabilisierung der Kamera-Initialisierung.
 - [`sprite-offset-audit.md`](./sprite-offset-audit.md) – Messung und Korrektur der Sprite-Offsets.
 - [`track-sprite-mapping.md`](./track-sprite-mapping.md) – Ergänzung der Sprite-Mappings für T- und Kreuzungen.
 - [`ui-scaling-dpi.md`](./ui-scaling-dpi.md) – DPI-Anpassung für UI-Skalierung.
+
+Abgeschlossene Themen wandern nach [`archive/`](./archive/README.md). Dort dokumentieren wir Referenzen zu den implementierten Änderungen, z. B. den Abschluss von [camera-initialization-timing.md](./archive/camera-initialization-timing.md).
 
 Neue Themen bitte mit eigenem Dateinamen anlegen und hier verlinken.
 
