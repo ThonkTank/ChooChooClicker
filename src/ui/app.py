@@ -7,6 +7,7 @@ from typing import Dict
 
 from assets import SpriteSheet
 from game import GameEngine, TickResult, TrainState
+from ui.camera import CameraView
 from world import Cell, Direction, TrackShape
 
 
@@ -26,9 +27,11 @@ class ChooChooApp:
         self._sprites: Dict[str, tk.PhotoImage] = {}
         self._sprite_sheet = SpriteSheet(self.root, sprite_sheet_path)
         self._show_grid = True
+        self._camera: CameraView | None = None
 
         self._create_widgets()
         self._load_sprites()
+        self._initialize_camera()
         self._draw_map()
         self._update_resource_display(self._train_state)
 
@@ -90,6 +93,19 @@ class ChooChooApp:
         )
         push_button.pack()
 
+    def _initialize_camera(self) -> None:
+        game_map = self.engine.game_map
+        viewport_size = (
+            game_map.width * self.CELL_SIZE,
+            game_map.height * self.CELL_SIZE,
+        )
+        self._camera = CameraView(
+            cell_size=self.CELL_SIZE,
+            map_size=(game_map.width, game_map.height),
+            viewport_size=viewport_size,
+        )
+        self._camera.center_on(self._train_state.position)
+
     def _load_sprites(self) -> None:
         self._sprites = {
             "ground": self._sprite_sheet.get_tile(0, 0),
@@ -150,6 +166,9 @@ class ChooChooApp:
             width=3,
         )
 
+        if self._camera is not None:
+            self._camera.apply(self.canvas)
+
     def _handle_click(self, event: tk.Event) -> None:  # type: ignore[type-arg]
         grid_x = event.x // self.CELL_SIZE
         grid_y = event.y // self.CELL_SIZE
@@ -180,6 +199,8 @@ class ChooChooApp:
     def _on_tick(self, result: TickResult) -> None:
         self._train_state = result.train
         if result.moved:
+            if self._camera is not None:
+                self._camera.center_on(result.train.position)
             self._draw_map()
         self._update_resource_display(result.train)
 
