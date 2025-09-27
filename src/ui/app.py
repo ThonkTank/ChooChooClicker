@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import tkinter as tk
 from pathlib import Path
-from typing import Dict
+from typing import Dict, FrozenSet
 
 from assets import SpriteSheet
 from game import GameEngine, TickResult, TrainState
@@ -115,6 +115,11 @@ class ChooChooApp:
             "track_curve_se": self._sprite_sheet.get_tile(2, 1, rotation=90),
             "track_curve_sw": self._sprite_sheet.get_tile(2, 1, rotation=180),
             "track_curve_nw": self._sprite_sheet.get_tile(2, 1, rotation=270),
+            "track_t_north": self._sprite_sheet.get_tile(0, 1),
+            "track_t_east": self._sprite_sheet.get_tile(2, 3),
+            "track_t_south": self._sprite_sheet.get_tile(0, 2),
+            "track_t_west": self._sprite_sheet.get_tile(1, 3),
+            "track_cross": self._sprite_sheet.get_tile(0, 3),
         }
 
     def _draw_map(self) -> None:
@@ -231,6 +236,28 @@ class ChooChooApp:
                 frozenset({Direction.WEST, Direction.NORTH}): "track_curve_nw",
             }
             return curve_map.get(connections, "track_curve_ne")
+
+        if piece.shape == TrackShape.T_JUNCTION:
+            t_map: Dict[FrozenSet[Direction], str] = {
+                frozenset({Direction.EAST, Direction.SOUTH, Direction.WEST}): "track_t_north",
+                frozenset({Direction.NORTH, Direction.EAST, Direction.WEST}): "track_t_south",
+                frozenset({Direction.NORTH, Direction.SOUTH, Direction.EAST}): "track_t_west",
+                frozenset({Direction.NORTH, Direction.SOUTH, Direction.WEST}): "track_t_east",
+            }
+            return t_map.get(connections, "track_t_north")
+
+        if piece.shape == TrackShape.CROSS:
+            cross_map: Dict[FrozenSet[Direction], str] = {
+                frozenset(
+                    {
+                        Direction.NORTH,
+                        Direction.EAST,
+                        Direction.SOUTH,
+                        Direction.WEST,
+                    }
+                ): "track_cross"
+            }
+            return cross_map.get(connections, "track_cross")
 
         return "track_straight_ns"
 

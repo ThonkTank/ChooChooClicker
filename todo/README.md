@@ -5,9 +5,9 @@ todo/
 ├── README.md
 ├── archive
 │   ├── README.md
-│   └── camera-initialization-timing.md
+│   ├── camera-initialization-timing.md
+│   └── track-sprite-mapping.md
 ├── sprite-offset-audit.md
-├── track-sprite-mapping.md
 └── ui-scaling-dpi.md
 ```
 
@@ -19,7 +19,6 @@ Dieses Verzeichnis sammelt alle offenen Aufgaben und Ideen für Choo Choo Clicke
 
 Aktuelle Aufgaben:
 - [`sprite-offset-audit.md`](./sprite-offset-audit.md) – Messung und Korrektur der Sprite-Offsets.
-- [`track-sprite-mapping.md`](./track-sprite-mapping.md) – Ergänzung der Sprite-Mappings für T- und Kreuzungen.
 - [`ui-scaling-dpi.md`](./ui-scaling-dpi.md) – DPI-Anpassung für UI-Skalierung.
 
 Abgeschlossene Themen wandern nach [`archive/`](./archive/README.md). Dort dokumentieren wir Referenzen zu den implementierten Änderungen, z. B. den Abschluss von [camera-initialization-timing.md](./archive/camera-initialization-timing.md).
