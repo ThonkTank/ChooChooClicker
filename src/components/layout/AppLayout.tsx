@@ -1,6 +1,9 @@
+import { useGameState } from "../../state";
 import styles from "./AppLayout.module.css";
 
 export function AppLayout() {
+  const { momentum } = useGameState();
+
   return (
     <div className={styles.appLayout}>
       <header className={styles.topBar}>
@@ -8,7 +11,9 @@ export function AppLayout() {
         <div className={styles.resourceSummary}>
           <div className={styles.resourceItem}>
             <span className={styles.resourceLabel}>Momentum</span>
-            <span className={styles.resourceValue}>0 / 10</span>
+            <span className={styles.resourceValue}>
+              {momentum.current} / {momentum.max}
+            </span>
           </div>
           <div className={styles.resourceItem}>
             <span className={styles.resourceLabel}>Ressourcen</span>
