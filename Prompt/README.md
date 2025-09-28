@@ -1,28 +1,38 @@
-# Prompt-Paket Übersicht
+# Prompt-Verzeichnis
 
-Dieses Verzeichnis bündelt alle Arbeitsanweisungen, Rollenprompts, Leitfäden und Vorlagen, die den Projektzyklus strukturieren. Lies vor jeder Session `loop_notes.md`, konsultiere dann den passenden Rollenprompt unter `roles/` und befolge die in `AGENTS.md` beschriebenen Guardrails.
+## Zweck
+Dieses Verzeichnis dient als zentrale Quelle für alle Projektprompts, Guardrails und Arbeitsunterlagen, damit jede Rolle im Loop konsistent arbeiten kann. Es bündelt die Vorgaben aus `AGENTS.md`, liefert Rollen-spezifische Hilfen und stellt wiederverwendbare Vorlagen bereit.
 
-## Dokumentationsstruktur
+## Zielgruppe
+Die Materialien richten sich an alle Projektrollen (Visionary, Planner, Implementation, Documentation, Supervisor), die nach dem kanonischen Bootstrap-Prozess arbeiten und während einer Session Entscheidungen dokumentieren müssen.
 
-| Ordner | Inhalt | Zweck |
-| --- | --- | --- |
-| `docs/` | Menschenlesbare Dokumentation: `project_overview.md`, `decisions/`, `CHANGELOG.md`, `loop_notes.md`, `documentation_structure.md` | Stellt Ziele, Architektur, ADRs, Änderungsprotokolle und den aktuellen Stand des Arbeitszyklus bereit. |
-| `context/` | Maschinenlesbarer Kontext: `knowledge.jsonl`, `glossary.md`, `standards/` | Enthält Chunks mit Metadaten, Glossar, Coding- und Dokumentationsstandards. |
-| `memory/` | Session-Snapshots und Entscheidungslog: `session_<Datum>.md`, `decisions.jsonl`, `logbook/` | Bewahrt die Historie jeder Arbeitssession, einschließlich Zusammenfassungen, Entscheidungen und offener Fragen. |
-| `tasks/` | Aufgabenmanagement: `backlog.jsonl`, `dag.json` | Enthält das versionierte Backlog und den Abhängigkeitsgraphen für alle Tasks. |
-| `system/` | Globaler Prompt und Guardrails | Enthält `system_prompt.md` (oder `.yaml`) sowie ergänzende Regeln und Richtlinien. |
-| `Prompt/roles/` | Rollen-Prompts und Checklisten | Definiert die detaillierten Arbeitsanweisungen für Planer, Ausführer, Dokumentations-Agent und Supervisor. |
+## Strukturüberblick
+- [`AGENTS.md`](./AGENTS.md): Systemweiter Rahmen mit Guardrails, Retrieval-Priorität und Bootstrap-Regeln.
+- [`loop_notes.md`](./loop_notes.md): Laufende Session-Notizen mit aktuellem Status und Übergaben.
+- [`roles/`](./roles/): Rollenprompts mit detaillierten Aufträgen und Checklisten-Verweisen.
+- [`templates/`](./templates/): Antwort-Contracts, Klarstellungs-Templates und andere Textbausteine.
+- [`policies/`](./policies/): Sicherheits-, Retrieval- und weitere Richtlinien.
+- [`checklists/`](./checklists/): Schritt-für-Schritt-Listen für Bootstrap, Reviews und Pflichtprüfungen.
+- [`guides/`](./guides/): Style- und Prompt-Guides für Struktur, Chunking und Metadaten.
 
-**Metadaten & Pflege:**
-- Nutze Markdown mit YAML-Frontmatter für menschenlesbare Dateien (`id`, `title`, `author`, `date`, `tags`, `status`).
-- Speichere maschinenlesbare Daten als JSON-Lines (`id`, `source`, `timestamp`, `summary`, `text`).
-- Versioniere Änderungen statt Dateien zu löschen; markiere alte Fassungen als `superseded` oder `deprecated`.
-- Aktualisiere `loop_notes.md` nach jeder Rolle, pflege ADRs & Changelog bei Entscheidungen und halte Glossar sowie Standards auf dem neuesten Stand.
+## Kernartefakte & Bootstrap-Bezug
+- **`AGENTS.md`**: Beschreibt den verbindlichen Start inklusive Strukturprüfung, Lesen und Aktualisieren von `loop_notes.md`, Setzen von `current_role` sowie die Nutzung des Response-Contracts.
+- **`loop_notes.md`**: Dokumentiert `current_role`, `last_steps`, `next_steps`, `blockers`, `validation_state`, `decision_log` und `role_prompt`; wird in jedem Bootstrap-Schritt gepflegt.
+- **Rollenprompts (`roles/`)**: Legen für jede Rolle Aufgaben, Übergaben und erforderliche Checklisten fest.
+- **Checklisten (`checklists/`)**: Enthalten unter anderem `pre_run` für den Bootstrap und Qualitätssicherungslisten für Reviews.
+- **Vorlagen (`templates/`)**: Stellen den Response-Contract und Formate für Klarstellungen bereit, die laut Bootstrap sofort zu aktivieren sind.
+- **Richtlinien (`policies/`)**: Ergänzen den Bootstrap um Guardrails (z. B. Sicherheits- und Retrieval-Priorität).
+- **Leitfäden (`guides/`)**: Unterfüttern Bootstrap-Anforderungen zu Stil, Chunking und Metadaten.
 
-## Projektüberblick
+## Benutzungsschritte
+1. Befolge den kanonischen Bootstrap aus [`AGENTS.md`](./AGENTS.md): Struktur prüfen, `loop_notes.md` lesen/aktualisieren, `current_role` setzen und den Response-Contract aktivieren.
+2. Öffne `loop_notes.md`, um die aktuell zu erfüllende Rolle und nächste Schritte zu identifizieren.
+3. Lade den passenden Rollenprompt in [`roles/`](./roles/) und konsultiere die referenzierte Checkliste in [`checklists/`](./checklists/).
+4. Nutze bei Antworten die Vorlagen aus [`templates/`](./templates/) und halte dich an Stil- und Guardrail-Vorgaben aus [`guides/`](./guides/) sowie [`policies/`](./policies/).
+5. Dokumentiere neue Erkenntnisse oder Entscheidungen direkt in `loop_notes.md` oder in den verlinkten Artefakten und wiederhole den Bootstrap bei Rollenwechsel.
 
-### Zielsetzung und Nutzererlebnis
-Halte die Vision des Projekts prägnant fest: gewünschtes Verhalten, Nutzerinteraktionen und Qualitätskriterien. Ausführliche Beschreibungen zur intended user experience leben im Wiki unter `docs/intended_experience/`. Die Einstiegsseite `docs/intended_experience/overview.md` verlinkt Feature-Seiten (`docs/intended_experience/features/`) und Detailseiten (`docs/intended_experience/details/`). Pflege diese Struktur gemeinsam mit dem Visionary, markiere veraltete Inhalte als `superseded` und dokumentiere Änderungen nachvollziehbar.
-
-### Architekturprinzipien & Roadmap
-Skizziere grundlegende Architekturprinzipien, Module und Meilensteine im Projekt-README oder in ADRs. Verweise bei Entscheidungen auf entsprechende ADRs in `docs/decisions/` und halte das Changelog aktuell, sodass jede Rolle schnell den Status des Systems nachvollziehen kann.
+## Ausdrücklich nicht enthalten
+- Keine CI-, Build- oder Deployment-Skripte.
+- Keine produktiven Source-Code-Dateien oder Bibliotheken.
+- Keine externen Abhängigkeiten oder Pakete.
+- Keine Laufzeitkonfiguration für Anwendungen.
