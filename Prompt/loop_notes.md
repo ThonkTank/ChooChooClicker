@@ -1,13 +1,19 @@
 ---
-current_role: ""
-last_steps: []
-next_steps: []
-role_prompt: ""
+current_role: planner
+last_steps:
+  - "Vision aktualisiert: docs/intended_experience/overview.md"
+  - "Features dokumentiert: Momentum, Schienenbau, UI-Panel"
+  - "Details ergänzt: Momentum-Ressource, UI-Layout"
+  - "Offene Fragen im Backlog erfasst"
+next_steps:
+  - "Feature-Vision in umsetzbare Tasks und User-Stories zerlegen"
+  - "Offene Fragen priorisieren und Klärung planen"
+role_prompt: "Prompt/planner_prompt.md"
 ---
 
 # Loop‑Notizen
 
-Diese Datei muss **nach jedem Arbeitsschritt von der jeweils aktiven Rolle** aktualisiert werden. Nur wenn die Loop‑Notizen gepflegt sind, weiß der nächste Agent, welche Rolle er ausführen muss und wo der zugehörige Prompt zu finden ist. Sie dient ausschließlich dazu, dem Agent mitzuteilen:
+Diese Datei muss **nach jedem Arbeitsschritt von der jeweils aktiven Rolle** aktualisiert werden. Nur wenn die Loop‑Notizen gepflegt sind, weiß der nächste Agent, welche Rolle auszuführen ist und wo der zugehörige Prompt zu finden ist. Sie dient ausschließlich dazu, dem Agent mitzuteilen:
 
 1. **Welche Rolle als Nächstes auszuführen ist** (`current_role`).
 2. **Was in den letzten Schritten erledigt wurde** (`last_steps`), als kurze Liste.
