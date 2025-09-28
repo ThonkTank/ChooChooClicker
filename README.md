@@ -14,12 +14,11 @@ Prompt/
   AGENTS.md                 # Single Entry Point + Bootstrap + Guardrails
   loop_notes.md             # Kanonischer Pfad + Template
   roles/
-    visionary.md
-    planner.md
-    architect.md
-    engineer.md
-    reviewer.md
-    supervisor.md
+    visionary_prompt.md
+    planner_prompt.md
+    implementation_prompt.md
+    documentation_prompt.md
+    supervisor_prompt.md
   templates/
     Response-Contracts.md
     ticket.md

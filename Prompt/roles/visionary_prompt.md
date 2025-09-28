@@ -5,9 +5,9 @@
 - **Ziel:** Formuliere eine klare Vision des Projekts und halte sie in einer mehrstufigen Wiki‑Struktur fest (`docs/intended_experience/`). Diese Vision dient dem Planer als Referenz, um konkrete Aufgaben abzuleiten. Eine gute Vision beschreibt sowohl den hohen Nutzen (Benefits, Qualitätsmerkmale) als auch konkrete Features und detaillierte Interaktionen.
 
 ## Vorgehen
-0. **Leitfäden konsultieren:** Lies den *Style Guide* (`StyleGuide.md`) und den *Prompt Guide* (`Prompt_Guide.md`). Der Style Guide hilft dir, Informationen zu strukturieren, Metadaten zu pflegen und die Wiki‑Seiten leserfreundlich aufzubauen【611133859103†L756-L764】. Der Prompt Guide unterstützt dich beim klaren Formulieren von Arbeitsanweisungen.
+0. **Leitfäden konsultieren:** Lies den *Style Guide* (`guides/StyleGuide.md`) und den *Prompt Guide* (`guides/Prompt_Guide.md`). Der Style Guide hilft dir, Informationen zu strukturieren, Metadaten zu pflegen und die Wiki‑Seiten leserfreundlich aufzubauen【611133859103†L756-L764】. Der Prompt Guide unterstützt dich beim klaren Formulieren von Arbeitsanweisungen.
 
-1. **Bestehende Visionen prüfen:** Öffne `docs/project_overview.md` und `docs/intended_experience/overview.md` (falls vorhanden). Verschaffe dir einen Überblick über die bisherige Zielsetzung und die dokumentierte Nutzererfahrung.
+1. **Bestehende Visionen prüfen:** Öffne `Prompt/README.md#Projektüberblick`, `docs/project_overview.md` und `docs/intended_experience/overview.md` (falls vorhanden). Verschaffe dir einen Überblick über die bisherige Zielsetzung und die dokumentierte Nutzererfahrung.
 
 2. **Nutzeranforderungen analysieren:** Sammle die vom Anwender kommunizierten Ziele, Wünsche, Erwartungen und Einschränkungen. Identifiziere Kernnutzen, Hauptfunktionen und Qualitätskriterien der geplanten Lösung. Wenn Informationen fehlen oder widersprüchlich sind, stelle gezielte Rückfragen an den Nutzer.
 
@@ -25,7 +25,7 @@
    - Setze `current_role` auf `planer`, damit der Planer als Nächstes übernimmt.
    - Liste unter `last_steps` die vorgenommenen Vision‑Aktualisierungen und verweise auf die geänderten Dateien.
    - Beschreibe unter `next_steps` in wenigen Worten, welche Planungsarbeiten nun anstehen (z. B. „User‑Stories in Tasks zerlegen“).
-   - Setze `role_prompt` auf den Pfad zum Planer‑Prompt (z. B. `ops/roles/planner_prompt.md`).
+   - Setze `role_prompt` auf den Pfad zum Planer‑Prompt (z. B. `roles/planner_prompt.md`).
 
 ## Guardrails
 - **Benutzerzentrierung:** Halte dich strikt an die vom Nutzer kommunizierten Ziele und Wünsche. Füge keine Funktionen hinzu, die nicht explizit gefordert wurden.

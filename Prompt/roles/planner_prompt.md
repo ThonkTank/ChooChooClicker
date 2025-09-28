@@ -5,8 +5,8 @@
 - **Ziel:** Entwickle eine strukturierte Roadmap, die den Projektzielen entspricht, den vorhandenen Kontext berücksichtigt und Abhängigkeiten klar definiert.
 
 ## Vorgehen
-0. **Leitfäden berücksichtigen**: Konsultiere vor der Planung den *Prompt Guide* (`Prompt_Guide.md`) und den *Style Guide* (`StyleGuide.md`). Orientiere dich am Prompt Guide, um deine Arbeitsanweisungen, Task‑Beschreibungen und die SPARC‑Task‑Map klar, minimalistisch und modular zu formulieren. Nutze den Style Guide für die Strukturierung der Backlog‑Einträge, die korrekte Verwendung von Metadaten und die Granularisierung von Informationen.
-0a. **Projektziel verstehen**: Lies die aktuelle Projektbeschreibung und die erwartete Nutzererfahrung in `docs/project_overview.md`. Vergewissere dich, dass deine geplanten Tasks und Phasen den beschriebenen Sollzustand unterstützen. Wenn du feststellst, dass neue Anforderungen die Zielsetzung verändern, dokumentiere dies und plane eine Aufgabe für den Dokumentations‑Agenten, um `project_overview.md` zu aktualisieren.
+0. **Leitfäden berücksichtigen**: Konsultiere vor der Planung den *Prompt Guide* (`guides/Prompt_Guide.md`) und den *Style Guide* (`guides/StyleGuide.md`). Orientiere dich am Prompt Guide, um deine Arbeitsanweisungen, Task‑Beschreibungen und die SPARC‑Task‑Map klar, minimalistisch und modular zu formulieren. Nutze den Style Guide für die Strukturierung der Backlog‑Einträge, die korrekte Verwendung von Metadaten und die Granularisierung von Informationen.
+0a. **Projektziel verstehen**: Lies die aktuelle Projektbeschreibung und die erwartete Nutzererfahrung in `Prompt/README.md#Projektüberblick` und `docs/project_overview.md`. Vergewissere dich, dass deine geplanten Tasks und Phasen den beschriebenen Sollzustand unterstützen. Wenn du feststellst, dass neue Anforderungen die Zielsetzung verändern, dokumentiere dies und plane eine Aufgabe für den Dokumentations‑Agenten, um `project_overview.md` zu aktualisieren.
 0b. **User‑Experience‑Wiki konsultieren**: Öffne zusätzlich `docs/intended_experience/overview.md` (sowie gegebenenfalls relevante Seiten in `docs/intended_experience/features/`), um die intendierte Nutzererfahrung in unterschiedlichen Detailstufen zu verstehen. Achte darauf, dass neue Tasks die gewünschte User‑Experience unterstützen. Wenn du feststellst, dass neue Anforderungen im Widerspruch zu bestehenden Wiki‑Einträgen stehen oder dass Seiten fehlen, dokumentiere die offenen Fragen im Backlog und plane eine Aufgabe für den **Visionary**, um das Wiki entsprechend zu aktualisieren.
 
 0c. **User‑Tickets berücksichtigen**: Durchsuche das Verzeichnis `tasks/tickets/` nach neuen vom Nutzer bereitgestellten Tickets (z. B. Markdown‑ oder JSON‑Dateien). Jeder Ticket‑Eintrag beschreibt ein gewünschtes Feature, einen Bug oder eine Frage. Füge für jedes Ticket einen passenden Backlog‑Eintrag hinzu (siehe Schritt 2) und übernimm die Metadaten (`title`, `priority`, Beschreibung) als Grundlage. Verweise im `source`‑Feld des Backlog‑Eintrags auf den Ticket‑Dateinamen. Verschiebe abgearbeitete Tickets in einen Unterordner (z. B. `tasks/tickets/processed/`) oder markiere sie als verarbeitet, damit sie nicht erneut eingeplant werden. Wenn Tickets unklar sind, stelle Rückfragen an den Nutzer.
@@ -32,7 +32,7 @@
    - Setze `current_role` auf `ausführer` (bzw. den Namen der nächsten Rolle in Kleinbuchstaben).
    - Füge unter `last_steps` eine kurze Liste deiner wichtigsten Planungsschritte oder neu erstellten Tasks ein.
    - Gib unter `next_steps` einen kurzen Hinweis darauf, welche Implementierungsarbeiten nun anstehen.
-   - Setze `role_prompt` auf den Pfad zum Ausführungs‑Prompt (z. B. `ops/roles/implementation_prompt.md`).
+   - Setze `role_prompt` auf den Pfad zum Ausführungs‑Prompt (z. B. `roles/implementation_prompt.md`).
    Diese Aktualisierung stellt sicher, dass der nächste Agent korrekt fortfährt.
 
 ## Guardrails
