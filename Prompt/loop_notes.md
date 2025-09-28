@@ -8,7 +8,10 @@ last_steps:
 next_steps:
   - "Feature-Vision in umsetzbare Tasks und User-Stories zerlegen"
   - "Offene Fragen priorisieren und Klärung planen"
-role_prompt: "Prompt/planner_prompt.md"
+blockers: []
+validation_state: "pending"
+decision_log: []
+role_prompt: "Prompt/roles/planner_prompt.md"
 ---
 
 # Loop‑Notizen
@@ -20,6 +23,6 @@ Diese Datei muss **nach jedem Arbeitsschritt von der jeweils aktiven Rolle** akt
 3. **Was als Nächstes zu tun ist** (`next_steps`), ebenfalls als Liste.
 4. **Wo sich der entsprechende Rollen‑Prompt befindet** (`role_prompt`), damit der Agent die detaillierten Anweisungen nachlesen kann.
 
-Planner > Implementation > Documentation > Supervisor > Planner
+Visionary → Planner → Implementation → Documentation → Supervisor → Visionary
 
-Alle anderen Informationen finden sich in den jeweiligen Rollen‑Prompts oder den übrigen Dokumenten des Projekts. Halte die YAML‑Metadaten oben immer aktuell, damit der Agent die nötigen Daten maschinell auslesen kann. Jede Rolle ist verpflichtet, nach Abschluss ihrer Arbeit die Felder `current_role`, `last_steps`, `next_steps` und `role_prompt` entsprechend anzupassen.
+Alle anderen Informationen finden sich in den jeweiligen Rollen‑Prompts oder den übrigen Dokumenten des Projekts. Halte die YAML‑Metadaten oben immer aktuell, damit der Agent die nötigen Daten maschinell auslesen kann. Jede Rolle ist verpflichtet, nach Abschluss ihrer Arbeit die Felder `current_role`, `last_steps`, `next_steps`, `blockers`, `validation_state`, `decision_log` und `role_prompt` entsprechend anzupassen.
