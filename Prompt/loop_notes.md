@@ -1,15 +1,13 @@
 ---
-current_role: implementation
+current_role: dokumentation
 last_steps:
-  - "Backlog in tasks/backlog.jsonl strukturiert und erweitert"
-  - "Aufgabenabhängigkeiten in tasks/dag.json dokumentiert"
-  - "SPARC-Task-Map in tasks/task_map.json erstellt"
-  - "Planungssession in memory/session_2025-09-29_planner.md protokolliert"
+  - "Vite-React-TypeScript-Projektstruktur inklusive Build- und Testkonfiguration erstellt"
+  - "Baselayout mit Kartenbereich, Menüleiste und Aktionspanel in AppLayout-Komponente angelegt"
+  - "Grundlegende Entwicklungs- und Testbefehle in README dokumentiert"
 next_steps:
-  - "Vite-React-TypeScript-Projektgerüst aufsetzen und Grundlayout anlegen"
-  - "State-Management für Grid, Gleise, Zug und Momentum definieren"
-  - "Momentum-Steuerung, Schienenbau und Zugbewegung iterativ implementieren"
-role_prompt: "Prompt/implementation_prompt.md"
+  - "Dokumentationsstand zu Projektsetup und Layout im Wiki/README präzisieren"
+  - "Änderungen für zukünftige Gameplay-Implementierungen vorbereiten"
+role_prompt: "Prompt/documentation_prompt.md"
 ---
 
 # Loop‑Notizen
