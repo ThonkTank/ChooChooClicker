@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "generated_at": "2025-09-29T00:00:00Z",
+  "tasks": [
+    {"id": "vision.open_progression", "deps": []},
+    {"id": "vision.open_scenarios", "deps": []},
+    {"id": "vision.open_momentum_scaling", "deps": []},
+    {"id": "impl.setup_foundation", "deps": []},
+    {"id": "impl.define_game_state", "deps": ["impl.setup_foundation"]},
+    {"id": "impl.build_ui_layout", "deps": ["impl.setup_foundation"]},
+    {"id": "impl.momentum_controls", "deps": ["impl.define_game_state", "impl.build_ui_layout"]},
+    {"id": "impl.track_building_interactions", "deps": ["impl.define_game_state", "impl.build_ui_layout"]},
+    {"id": "impl.train_movement_loop", "deps": ["impl.define_game_state", "impl.track_building_interactions", "impl.momentum_controls"]},
+    {"id": "doc.implementation_summary", "deps": ["impl.train_movement_loop"]},
+    {"id": "sup.review_gameplay_mvp", "deps": ["impl.train_movement_loop", "doc.implementation_summary"]}
+  ]
+}

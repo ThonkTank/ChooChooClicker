@@ -1,14 +1,15 @@
 ---
-current_role: planner
+current_role: implementation
 last_steps:
-  - "Vision aktualisiert: docs/intended_experience/overview.md"
-  - "Features dokumentiert: Momentum, Schienenbau, UI-Panel"
-  - "Details ergänzt: Momentum-Ressource, UI-Layout"
-  - "Offene Fragen im Backlog erfasst"
+  - "Backlog in tasks/backlog.jsonl strukturiert und erweitert"
+  - "Aufgabenabhängigkeiten in tasks/dag.json dokumentiert"
+  - "SPARC-Task-Map in tasks/task_map.json erstellt"
+  - "Planungssession in memory/session_2025-09-29_planner.md protokolliert"
 next_steps:
-  - "Feature-Vision in umsetzbare Tasks und User-Stories zerlegen"
-  - "Offene Fragen priorisieren und Klärung planen"
-role_prompt: "Prompt/planner_prompt.md"
+  - "Vite-React-TypeScript-Projektgerüst aufsetzen und Grundlayout anlegen"
+  - "State-Management für Grid, Gleise, Zug und Momentum definieren"
+  - "Momentum-Steuerung, Schienenbau und Zugbewegung iterativ implementieren"
+role_prompt: "Prompt/implementation_prompt.md"
 ---
 
 # Loop‑Notizen
