@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/backlog.schema.json",
+  "$comment": "Backlog-Einträge werden außerhalb des Prompt-Pakets verwaltet; dieses Schema dient nur zur Validierung.",
+  "title": "Backlog Entry",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "status",
+    "created_at"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stabile eindeutige Kennung, z. B. B-20240101-001."
+    },
+    "title": {
+      "type": "string",
+      "description": "Kurzbeschreibung des Eintrags."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "blocked",
+        "in_progress",
+        "done"
+      ],
+      "description": "Aktueller Bearbeitungsstatus."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Erstellungszeitpunkt im ISO-8601-Format."
+    },
+    "owner": {
+      "type": "string",
+      "description": "Verantwortliche Person oder Rolle."
+    },
+    "priority": {
+      "type": "string",
+      "description": "Priorität wie P0, P1 oder P2."
+    },
+    "deps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "IDs der abhängigen Tickets oder Backlog-Einträge."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Schlagwörter zur Kategorisierung."
+    },
+    "source": {
+      "type": "string",
+      "description": "Ursprung wie human, system oder external."
+    },
+    "summary": {
+      "type": "string",
+      "description": "Kurzfassung des aktuellen Stands."
+    },
+    "language": {
+      "type": "string",
+      "description": "Sprachcode nach ISO 639-1."
+    }
+  },
+  "additionalProperties": false
+}
