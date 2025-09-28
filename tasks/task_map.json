@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "generated_at": "2025-09-29T00:00:00Z",
+  "tasks": [
+    {
+      "id": "impl.setup_foundation",
+      "agent": "implementer",
+      "specification": "Initialisiere ein Vite-Projekt mit React und TypeScript, richte ESLint/Prettier sowie Basis-Testskripte ein und lege den Grundordner für Spiel- und UI-Komponenten an.",
+      "dependencies": [],
+      "outputs": [
+        "Vite-React-TypeScript-Projektstruktur",
+        "Konfigurierte ESLint/Prettier- und Testskripte",
+        "Placeholder-Komponenten für Karte, Menüleiste und Panel"
+      ],
+      "validation": [
+        "`npm run build` und `npm run test` laufen fehlerfrei",
+        "Startseite zeigt drei Layout-Bereiche als Platzhalter"
+      ],
+      "human_checkpoint": false,
+      "scope": "Repository-Setup, Build-Konfiguration, erste UI-Platzhalter"
+    },
+    {
+      "id": "impl.define_game_state",
+      "agent": "implementer",
+      "specification": "Definiere TypeScript-Typen und State-Management für Grid, Gleise, Zug und Momentum inkl. Aktionen zum Aktualisieren.",
+      "dependencies": ["impl.setup_foundation"],
+      "outputs": [
+        "TypeScript-Interfaces für Tiles, Tracks, Train und Momentum",
+        "Zentrales State-Store-Modul mit Actions/Reducer oder Zustand",
+        "Unit-Tests für Kernfunktionen zur Zustandsmanipulation"
+      ],
+      "validation": [
+        "State-Tests laufen grün",
+        "State-Module exportieren dokumentierte Aktionen für Momentum und Gleise"
+      ],
+      "human_checkpoint": false,
+      "scope": "Spielarchitektur und Datenmodelle"
+    },
+    {
+      "id": "impl.build_ui_layout",
+      "agent": "implementer",
+      "specification": "Implementiere das Ziel-Layout mit Kartenbereich links, Menüleiste oben und Aktionspanel rechts inklusive responsiver Styles.",
+      "dependencies": ["impl.setup_foundation"],
+      "outputs": [
+        "React-Komponenten für MapView, TopBar und ActionPanel",
+        "CSS/Styles, die die drei Bereiche layouten",
+        "Interaktionsstubs (Buttons/Slots) für spätere Features"
+      ],
+      "validation": [
+        "Manuelle Sichtprüfung im Browser entspricht dem UI-Detaildokument",
+        "Layout-Tests/Screenshot-Komponenten bestehen (falls vorhanden)"
+      ],
+      "human_checkpoint": false,
+      "scope": "Frontend-Layout und Styling"
+    },
+    {
+      "id": "impl.momentum_controls",
+      "agent": "implementer",
+      "specification": "Verbinde Kurbelaktion und Momentum-Anzeige mit dem Spielzustand und implementiere UI-Feedback für Momentum-Änderungen.",
+      "dependencies": ["impl.define_game_state", "impl.build_ui_layout"],
+      "outputs": [
+        "ActionPanel mit Kurbelbutton und Momentum-Leiste",
+        "State-Updates für Momentum-Aufbau und -Verbrauch",
+        "UI-Feedback (z. B. Animationsklassen oder Farbwechsel)"
+      ],
+      "validation": [
+        "Interaktion erhöht Momentum bis zum Limit und stoppt korrekt",
+        "Momentum sinkt beim Tick/Event entsprechend den Regeln",
+        "Komponententests decken Grenzfälle (0 und Maximum) ab"
+      ],
+      "human_checkpoint": false,
+      "scope": "Gameplay-Loop Momentum"
+    },
+    {
+      "id": "impl.track_building_interactions",
+      "agent": "implementer",
+      "specification": "Implementiere Rechtsklick-Modi für Gleisplatzierung/-entfernung sowie UI zur Auswahl von Gleisarten und Weichenstellung.",
+      "dependencies": ["impl.define_game_state", "impl.build_ui_layout"],
+      "outputs": [
+        "Context- oder Toggle-Mechanik für Baumodus",
+        "State-Aktionen zum Platzieren/Entfernen von Gleisen",
+        "Visualisierung der Gleisarten und Weichen in der Karte"
+      ],
+      "validation": [
+        "Rechtsklick wechselt zuverlässig zwischen Platzieren/Entfernen",
+        "Ungültige Platzierungen liefern Fehlfeedback",
+        "Weichenstatus lässt sich per Linksklick ändern und wird sichtbar"
+      ],
+      "human_checkpoint": false,
+      "scope": "Streckeneditor-Interaktionen"
+    },
+    {
+      "id": "impl.train_movement_loop",
+      "agent": "implementer",
+      "specification": "Erstelle den Zugbewegungs-Loop, der Momentum verbraucht, Pfade entlang der verlegten Schienen berechnet und Stopps bei 0 Momentum handhabt.",
+      "dependencies": ["impl.define_game_state", "impl.track_building_interactions", "impl.momentum_controls"],
+      "outputs": [
+        "Update-Loop oder Tick-System für Zugbewegung",
+        "Visualisierung der Zugposition und Animation",
+        "Fehlerbehandlung für unterbrochene Strecken"
+      ],
+      "validation": [
+        "Automatischer Test oder Simulation bestätigt Momentum-Verbrauch pro Schritt",
+        "Manueller Test: Zug stoppt bei Momentum 0 und startet nach Aufladen",
+        "Pathing reagiert sofort auf Weichenänderungen"
+      ],
+      "human_checkpoint": true,
+      "scope": "Zuglogik und Simulation"
+    },
+    {
+      "id": "doc.implementation_summary",
+      "agent": "documentation",
+      "specification": "Dokumentiere die umgesetzten Gameplay-Funktionen und UI-Strukturen im Wiki und README, inkl. Screenshots/GIFs falls möglich.",
+      "dependencies": ["impl.train_movement_loop"],
+      "outputs": [
+        "Aktualisierte README/Docs-Abschnitte",
+        "Changelog oder Release-Notiz für MVP",
+        "Aktualisierte offene Fragen/To-dos"
+      ],
+      "validation": [
+        "Review bestätigt, dass Dokumentation den aktuellen Stand widerspiegelt",
+        "Screenshots/Diagramme liegen im Repo"
+      ],
+      "human_checkpoint": false,
+      "scope": "Dokumentation des MVP"
+    },
+    {
+      "id": "sup.review_gameplay_mvp",
+      "agent": "supervisor",
+      "specification": "Führe Code- und Gameplay-Review für den MVP durch, prüfe Tests, UI-Umsetzung und Visionserfüllung und dokumentiere Feedback.",
+      "dependencies": ["impl.train_movement_loop", "doc.implementation_summary"],
+      "outputs": [
+        "Review-Protokoll mit Freigabe oder Issues",
+        "Liste gefundener Bugs oder Nachbesserungen"
+      ],
+      "validation": [
+        "Alle Tests laufen in der CI",
+        "Gameplay-Check erfüllt Akzeptanzkriterien der drei Kernfeatures"
+      ],
+      "human_checkpoint": true,
+      "scope": "Qualitätssicherung und Abnahme"
+    }
+  ]
+}
